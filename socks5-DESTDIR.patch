@@ -1,0 +1,240 @@
+diff -Nru socks5-v1.0r10/Makefile.in socks5-v1.0r10.new/Makefile.in
+--- socks5-v1.0r10/Makefile.in	Mon Mar 27 03:15:18 2000
++++ socks5-v1.0r10.new/Makefile.in	Mon Mar 27 03:16:43 2000
+@@ -52,12 +52,12 @@
+ 
+ .PHONY : util.install
+ util.install:
+-	@(cd lib; $(MAKE) util.install)
++	@(cd lib; $(MAKE) DESTDIR=$(DESTDIR) util.install)
+ 
+ .PHONY : clients.install
+ clients.install:
+-	@( if [ ! -d $(exec_prefix)/bin ]; then mkdir -p $(exec_prefix)/bin; fi )
+-	@( cd clients ; $(MAKE) install )
++	@( if [ ! -d $(DESTDIR)$(exec_prefix)/bin ]; then mkdir -p $(DESTDIR)$(exec_prefix)/bin; fi )
++	@( cd clients ; $(MAKE) DESTDIR=$(DESTDIR) install )
+ 
+ .PHONY : clients.clean
+ clients.clean:
+@@ -72,15 +72,15 @@
+ 
+ .PHONY : server.install
+ server.install:
+-	@( if [ ! -d $(mandir)/man1 ]; then mkdir -p $(mandir)/man1; fi )
+-	@( if [ ! -d $(mandir)/man5 ]; then mkdir -p $(mandir)/man5; fi )
+-	@( if [ ! -d $(exec_prefix)/bin ]; then mkdir -p $(exec_prefix)/bin; fi )
+-	@( if [ ! -d $(exec_prefix)/sbin ]; then mkdir -p $(exec_prefix)/sbin; fi )
+-	$(INSTALL) $(srcdir)/man/man5/socks5.conf.5 $(mandir)/man5
+-	$(INSTALL) $(srcdir)/man/man5/socks5.passwd.5 $(mandir)/man5
+-	$(INSTALL) $(srcdir)/man/man1/stopsocks.1 $(mandir)/man1
+-	$(INSTALL) $(srcdir)/man/man1/socks5.1 $(mandir)/man1
+-	@( cd server; $(MAKE) install )
++	@( if [ ! -d $(DESTDIR)$(mandir)/man1 ]; then mkdir -p $(DESTDIR)$(mandir)/man1; fi )
++	@( if [ ! -d $(DESTDIR)$(mandir)/man5 ]; then mkdir -p $(DESTDIR)$(mandir)/man5; fi )
++	@( if [ ! -d $(DESTDIR)$(exec_prefix)/bin ]; then mkdir -p $(DESTDIR)$(exec_prefix)/bin; fi )
++	@( if [ ! -d $(DESTDIR)$(exec_prefix)/sbin ]; then mkdir -p $(DESTDIR)$(exec_prefix)/sbin; fi )
++	$(INSTALL) $(srcdir)/man/man5/socks5.conf.5 $(DESTDIR)$(mandir)/man5
++	$(INSTALL) $(srcdir)/man/man5/socks5.passwd.5 $(DESTDIR)$(mandir)/man5
++	$(INSTALL) $(srcdir)/man/man1/stopsocks.1 $(DESTDIR)$(mandir)/man1
++	$(INSTALL) $(srcdir)/man/man1/socks5.1 $(DESTDIR)$(mandir)/man1
++	@( cd server; $(MAKE) DESTDIR=$(DESTDIR) install )
+ 
+ .PHONY : server.clean
+ server.clean:
+@@ -102,10 +102,10 @@
+ 
+ .PHONY : shlib.install
+ shlib.install:
+-	@( if [ ! -d $(mandir)/man1 ]; then mkdir -p $(mandir)/man1; fi )
+-	@( if [ ! -d $(exec_prefix)/bin ]; then mkdir -p $(exec_prefix)/bin; fi )
+-	$(INSTALL) $(srcdir)/man/man1/runsocks.1 $(mandir)/man1
+-	@(cd shlib; $(MAKE) install)
++	@( if [ ! -d $(DESTDIR)$(mandir)/man1 ]; then mkdir -p $(DESTDIR)$(mandir)/man1; fi )
++	@( if [ ! -d $(DESTDIR)$(exec_prefix)/bin ]; then mkdir -p $(DESTDIR)$(exec_prefix)/bin; fi )
++	$(INSTALL) $(srcdir)/man/man1/runsocks.1 $(DESTDIR)$(mandir)/man1
++	@(cd shlib; $(MAKE) DESTDIR=$(DESTDIR) install)
+ 
+ .PHONY : shlib.clean
+ shlib.clean:
+@@ -121,11 +121,11 @@
+ 
+ .PHONY : lib.install
+ lib.install:
+-	@( if [ ! -d $(mandir)/man5 ]; then mkdir -p $(mandir)/man5; fi )
+-	$(INSTALL) $(srcdir)/man/man5/libsocks5.conf.5 $(mandir)/man5
+-	$(INSTALL) $(srcdir)/man/man1/socks5_clients.1 $(mandir)/man1
+-	@(cd include; $(MAKE) install)
+-	@(cd lib; $(MAKE) install)
++	@( if [ ! -d $(DESTDIR)$(mandir)/man5 ]; then mkdir -p $(DESTDIR)$(mandir)/man5; fi )
++	$(INSTALL) $(srcdir)/man/man5/libsocks5.conf.5 $(DESTDIR)$(mandir)/man5
++	$(INSTALL) $(srcdir)/man/man1/socks5_clients.1 $(DESTDIR)$(mandir)/man1
++	@(cd include; $(MAKE) DESTDIR=$(DESTDIR) install)
++	@(cd lib; $(MAKE) DESTDIR=$(DESTDIR) install)
+ 
+ .PHONY : lib.clean
+ lib.clean:
+diff -Nru socks5-v1.0r10/clients/Makefile.in socks5-v1.0r10.new/clients/Makefile.in
+--- socks5-v1.0r10/clients/Makefile.in	Mon Mar 27 03:15:18 2000
++++ socks5-v1.0r10.new/clients/Makefile.in	Mon Mar 27 02:51:32 2000
+@@ -18,7 +18,7 @@
+ 	@(for i in $(SUBDIRS);  do (cd $$i; $(MAKE) -k MAKE=$(MAKE) distclean); done)
+ 
+ install: all 
+-	@(for i in $(SUBDIRS);  do (cd $$i; $(MAKE) -k MAKE=$(MAKE) install); done) 
++	@(for i in $(SUBDIRS);  do (cd $$i; $(MAKE) -k MAKE=$(MAKE) DESTDIR=$(DESTDIR) install); done) 
+ 
+ depend:
+ 	@(cd pt; $(MAKE -k MAKE=$(MAKE) depend); ) 
+diff -Nru socks5-v1.0r10/clients/archie/Makefile.in socks5-v1.0r10.new/clients/archie/Makefile.in
+--- socks5-v1.0r10/clients/archie/Makefile.in	Mon Mar 27 03:15:18 2000
++++ socks5-v1.0r10.new/clients/archie/Makefile.in	Mon Mar 27 02:51:32 2000
+@@ -92,7 +92,8 @@
+ 	nroff -man archie.man | tr '\010' _ | sed -e s/__//g > archie.doc
+ 
+ install: archie
+-	$(INSTALL) -m 111 archie $(BINDIR)/rarchie
++	mkdir -p $(DESTDIR)$(BINDIR)
++	$(INSTALL) -m 755 archie $(DESTDIR)$(BINDIR)/rarchie
+ 
+ # Regain precompiled state
+ clean: 
+diff -Nru socks5-v1.0r10/clients/finger/Makefile.in socks5-v1.0r10.new/clients/finger/Makefile.in
+--- socks5-v1.0r10/clients/finger/Makefile.in	Mon Mar 27 03:15:18 2000
++++ socks5-v1.0r10.new/clients/finger/Makefile.in	Mon Mar 27 02:51:32 2000
+@@ -42,12 +42,14 @@
+ 	$(CC) $(WHOIS_SERVER) $(CFLAGS) -o $@ $(srcdir)/$(SRC) $(LIBS)
+ 
+ install: finger whois
+-	$(INSTALL) -m 111 finger $(BINDIR)/rfinger
+-	$(INSTALL) -m 111 whois $(BINDIR)/rwhois
++	mkdir -p $(DESTDIR)$(BINDIR)
++	$(INSTALL) -m 755 finger $(DESTDIR)$(BINDIR)/rfinger
++	$(INSTALL) -m 755 whois $(DESTDIR)$(BINDIR)/rwhois
+ 
+ install.man: 
+-	$(INSTALL) -m 444 ../doc/finger.1 $(MANDIR)/man1
+-	$(INSTALL) -m 444 ../doc/whois.1 $(MANDIR)/man1
++	mkdir -p $(DESTDIR)$(MANDIR)/man1
++	$(INSTALL) -m 644 ../doc/finger.1 $(DESTDIR)$(MANDIR)/man1
++	$(INSTALL) -m 644 ../doc/whois.1 $(DESTDIR)$(MANDIR)/man1
+ 
+ clean: 
+ 	-$(BINRM) whois finger core
+diff -Nru socks5-v1.0r10/clients/ftp/Makefile.in socks5-v1.0r10.new/clients/ftp/Makefile.in
+--- socks5-v1.0r10/clients/ftp/Makefile.in	Mon Mar 27 03:15:18 2000
++++ socks5-v1.0r10.new/clients/ftp/Makefile.in	Mon Mar 27 02:52:32 2000
+@@ -40,10 +40,12 @@
+ 	$(CC) $(CFLAGS) -o $(PROG) $(OBJS) $(LIBS)
+ 
+ install: $(PROG)
+-	$(INSTALL) -m 111 $(PROG) $(BINDIR)/r$(PROG)
++	mkdir -p $(DESTDIR)$(BINDIR)
++	$(INSTALL) -m 755 $(PROG) $(DESTDIR)$(BINDIR)/r$(PROG)
+ 
+ install.man: 
+-	$(INSTALL) -m 444 ftp.1 $(MANDIR)/man1
++	mkdir -p $(DESTDIR)$(MANDIR)/man1
++	$(INSTALL) -m 444 ftp.1 $(DESTDIR)$(MANDIR)/man1
+ 
+ clean: 
+ 	-$(BINRM) $(OBJS) $(PROG) core 
+diff -Nru socks5-v1.0r10/clients/pt/Makefile.in socks5-v1.0r10.new/clients/pt/Makefile.in
+--- socks5-v1.0r10/clients/pt/Makefile.in	Mon Mar 27 03:15:18 2000
++++ socks5-v1.0r10.new/clients/pt/Makefile.in	Mon Mar 27 02:51:32 2000
+@@ -33,8 +33,9 @@
+ 	$(CC) $(CFLAGS) -o $@ rtrace.o share.o $(LIBS)
+ 
+ install:  rping rtraceroute
+-	$(INSTALL) -m 111 rping $(BINDIR)
+-	$(INSTALL) -m 111 rtraceroute $(BINDIR)
++	mkdir -p $(DESTDIR)$(BINDIR)
++	$(INSTALL) -m 755 rping $(DESTDIR)$(BINDIR)
++	$(INSTALL) -m 755 rtraceroute $(DESTDIR)$(BINDIR)
+ 
+ clean: 
+ 	-$(BINRM) $(OBJS) rping rtraceroute core
+diff -Nru socks5-v1.0r10/clients/telnet/Makefile.in socks5-v1.0r10.new/clients/telnet/Makefile.in
+--- socks5-v1.0r10/clients/telnet/Makefile.in	Mon Mar 27 03:15:18 2000
++++ socks5-v1.0r10.new/clients/telnet/Makefile.in	Mon Mar 27 02:51:32 2000
+@@ -68,7 +68,8 @@
+ 	$(CC) $(CFLAGS) $(SOCKSFLAGS) -o $(PROG) $(OBJS) $(LIBS) -Llibtelnet -ltelnet
+ 
+ install: $(PROG)
+-	$(INSTALL) -m 111 $(PROG) $(BINDIR)/r$(PROG)
++	mkdir -p $(DESTDIR)$(BINDIR)
++	$(INSTALL) -m 755 $(PROG) $(DESTDIR)$(BINDIR)/r$(PROG)
+ 
+ clean:
+ 	-$(BINRM) $(PROG) $(OBJS) core
+diff -Nru socks5-v1.0r10/include/Makefile.in socks5-v1.0r10.new/include/Makefile.in
+--- socks5-v1.0r10/include/Makefile.in	Mon Mar 27 03:15:18 2000
++++ socks5-v1.0r10.new/include/Makefile.in	Mon Mar 27 02:51:32 2000
+@@ -19,8 +19,8 @@
+ 	$(CC) $(CFLAGS) -E -dM -DSOCKS $(srcdir)/socks.h >> socksraw.h
+ 
+ install: 
+-	@( if [ ! -d $(prefix)/include ]; then mkdir -p $(prefix)/include; fi )
+-	$(INSTALL) -m 644 $(srcdir)/socks.h $(prefix)/include
++	@( if [ ! -d $(DESTDIR)$(prefix)/include ]; then mkdir -p $(DESTDIR)$(prefix)/include; fi )
++	$(INSTALL) -m 644 $(srcdir)/socks.h $(DESTDIR)$(prefix)/include
+ 
+ clean:
+ 	-$(BINRM) socksraw.h 
+diff -Nru socks5-v1.0r10/lib/Makefile.in socks5-v1.0r10.new/lib/Makefile.in
+--- socks5-v1.0r10/lib/Makefile.in	Mon Mar 27 03:15:18 2000
++++ socks5-v1.0r10.new/lib/Makefile.in	Mon Mar 27 02:51:32 2000
+@@ -59,17 +59,17 @@
+ 	$(RANLIB) $@
+ 
+ install: libsocks5.a
+-	@( if [ ! -d $(libdir) ]; then mkdir -p $(libdir); fi )
+-	$(INSTALL) libsocks5.a $(libdir)/libsocks5.a
++	@( if [ ! -d $(DESTDIR)$(libdir) ]; then mkdir -p $(DESTDIR)$(libdir); fi )
++	$(INSTALL) libsocks5.a $(DESTDIR)$(libdir)/libsocks5.a
+ 
+ util.install: libs5util.a
+-	@( if [ ! -d $(prefix)/include ]; then mkdir -p $(prefix)/include; fi )
+-	@( if [ ! -d $(libdir) ]; then mkdir -p $(libdir); fi )
+-	$(INSTALL) -m 644 $(srcdir)/../include/s5util.h $(prefix)/include
+-	$(INSTALL) -m 644 $(srcdir)/../include/socks5api.h $(prefix)/include
+-	$(INSTALL) -m 644 $(srcdir)/../include/includes.h $(prefix)/include
+-	$(INSTALL) -m 644 ../include/config.h $(prefix)/include
+-	$(INSTALL) -m 644 libs5util.a $(libdir)/libs5util.a
++	@( if [ ! -d $(DESTDIR)$(prefix)/include ]; then mkdir -p $(DESTDIR)$(prefix)/include; fi )
++	@( if [ ! -d $(DESTDIR)$(libdir) ]; then mkdir -p $(DESTDIR)$(libdir); fi )
++	$(INSTALL) -m 644 $(srcdir)/../include/s5util.h $(DESTDIR)$(prefix)/include
++	$(INSTALL) -m 644 $(srcdir)/../include/socks5api.h $(DESTDIR)$(prefix)/include
++	$(INSTALL) -m 644 $(srcdir)/../include/includes.h $(DESTDIR)$(prefix)/include
++	$(INSTALL) -m 644 ../include/config.h $(DESTDIR)$(prefix)/include
++	$(INSTALL) -m 644 libs5util.a $(DESTDIR)$(libdir)/libs5util.a
+ 
+ clean:
+ 	-$(BINRM) *.o libsocks5.a libs5util.a
+diff -Nru socks5-v1.0r10/server/Makefile.in socks5-v1.0r10.new/server/Makefile.in
+--- socks5-v1.0r10/server/Makefile.in	Mon Mar 27 03:15:18 2000
++++ socks5-v1.0r10.new/server/Makefile.in	Mon Mar 27 02:51:32 2000
+@@ -67,8 +67,9 @@
+ 	$(CC) $(CFLAGS) -o socks5 $(OBJS) $(LDFLAGS) $(LIBS) 
+ 
+ install:
+-	$(INSTALL) socks5 $(exec_prefix)/sbin
+-	$(INSTALL) stopsocks $(exec_prefix)/sbin
++	mkdir -p $(DESTDIR)$(exec_prefix)/sbin
++	$(INSTALL) socks5 $(DESTDIR)$(exec_prefix)/sbin
++	$(INSTALL) stopsocks $(DESTDIR)$(exec_prefix)/sbin
+ 
+ clean:
+ 	-$(BINRM) *.o socks5 core
+diff -Nru socks5-v1.0r10/shlib/Makefile.in socks5-v1.0r10.new/shlib/Makefile.in
+--- socks5-v1.0r10/shlib/Makefile.in	Mon Mar 27 03:15:18 2000
++++ socks5-v1.0r10.new/shlib/Makefile.in	Mon Mar 27 02:51:32 2000
+@@ -56,7 +56,7 @@
+ 	$(SHLIB_LD) -o $@ $(SHLIB_LFLAGS) $(OBJS) $(LDFLAGS) $(SHLIB_LIBS) $(DLLIBS)
+ 
+ install: Makefile $(SHLIB_LIB) runsocks
+-	if [ -n "$(SHLIB_LIB)" -a -f "$(SHLIB_LIB)" ] ; then $(INSTALL) $(SHLIB_LIB) $(prefix)/lib ; $(INSTALL) runsocks $(exec_prefix)/bin; fi
++	if [ -n "$(SHLIB_LIB)" -a -f "$(SHLIB_LIB)" ] ; then $(INSTALL) $(SHLIB_LIB) $(DESTDIR)$(prefix)/lib ; $(INSTALL) runsocks $(DESTDIR)$(exec_prefix)/bin; fi
+ 
+ clean:
+ 	-$(BINRM) *.o $(SHLIB_LIB) so_locations
