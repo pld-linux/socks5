@@ -105,7 +105,7 @@ export CFLAGS LDFLAGS
 	--with-srvpidfile=/var/run/socks5.pid \
 	--with-srvidtfile=/tmp/.socks5.ident  \
 #	--with-krb5=%{_prefix}/athena \
-make
+%{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
