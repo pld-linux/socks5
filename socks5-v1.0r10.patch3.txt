@@ -1,0 +1,31 @@
+
+This patch fixes a problem with the SOCKS client library for dup().
+The ftp client uses dup().
+
+Index: cache.c
+===================================================================
+RCS file: socks5/lib/cache.c,v
+retrieving revision 1.30.2.1.2.3
+retrieving revision 1.30.2.1.2.4
+diff -c -r1.30.2.1.2.3 -r1.30.2.1.2.4
+*** cache.c	1999/06/24 15:16:01	1.30.2.1.2.3
+--- cache.c	1999/11/23 20:58:41	1.30.2.1.2.4
+***************
+*** 26,33 ****
+      lsProxyInfo *n, *p = *pp;
+      
+      for (n = p?p->next:NULL; p ; p = n, n = n?n->next:NULL) {
+- 	if (--(p->refcount) > 0) continue;
+  	if (p->cinfo.fd == rfd) p->cinfo.fd = S5InvalidIOHandle;
+  	S5BufCleanContext(&p->cinfo);
+  	free(p);
+      }
+--- 26,33 ----
+      lsProxyInfo *n, *p = *pp;
+      
+      for (n = p?p->next:NULL; p ; p = n, n = n?n->next:NULL) {
+  	if (p->cinfo.fd == rfd) p->cinfo.fd = S5InvalidIOHandle;
++ 	if (--(p->refcount) > 0) continue;
+  	S5BufCleanContext(&p->cinfo);
+  	free(p);
+      }
