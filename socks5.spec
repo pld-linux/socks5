@@ -24,8 +24,6 @@ Patch6:		%{name}-v1.0r8.archie.diff
 Patch7:		%{name}-fhs.patch
 Patch8:		%{name}-DESTDIR.patch
 Patch9:		%{name}-shared_libs.patch
-Prereq:		rc-scripts
-Prereq:		/sbin/chkconfig
 URL:		http://www.socks.nec.com/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -49,6 +47,8 @@ traceroute, ftp, finger, whois, archie oraz telnet u¿ywaj±ce SOCKS
 Summary:	SOCKS 5.0 Server Daemon
 Summary(pl):	Serwer SOCKS 5.0
 Group:		Daemons
+PreReq:		rc-scripts
+Requires(post,preun):	/sbin/chkconfig
 Requires:	%{name} = %{version}
 
 %description server
@@ -143,8 +143,8 @@ chmod -R u+r $RPM_BUILD_ROOT
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%preun -p /sbin/ldconfig
-%post  -p /sbin/ldconfig
+%post	-p /sbin/ldconfig
+%postun	-p /sbin/ldconfig
 
 %post server
 /sbin/chkconfig --add socks5
