@@ -5,9 +5,9 @@ Version:	1.0r10
 Release:	3
 License:	Copyright (c) 1995,1996 NEC Corporation. Freely distributable
 Vendor:		Socks5 Team <socks5-comments@socks.nec.com>
-Group:		Daemons
-Group(de):	Server
-Group(pl):	Serwery
+Group:		Networking/Daemons
+Group(de):	Netzwerkwesen/Server
+Group(pl):	Sieciowe/Serwery
 Source0:	%{name}-v%{version}.tar.gz
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
