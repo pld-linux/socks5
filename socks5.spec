@@ -1,9 +1,9 @@
 Summary:	Proxy server
 Summary(pl):	Serwer Proxy 
 Name:		socks5
-Copyright:	Copyright (c) 1995,1996 NEC Corporation. Freely Distributable
 Version:	1.0r10
 Release:	3
+License:	Copyright (c) 1995,1996 NEC Corporation. Freely Distributable
 Vendor:		Socks5 Team <socks5-comments@socks.nec.com>
 Group:		Daemons
 Group(de):	Server
@@ -19,7 +19,7 @@ Patch2:		http://www.socks.nec.com/patch/%{name}-v1.0r10.patch3.txt
 Patch3:		http://www.socks.nec.com/patch/%{name}-v1.0r10.patch4.txt
 Patch4:		http://www.socks.nec.com/patch/%{name}-v1.0r10.patch5.txt
 # This is modified version of translator patch:	
-# http:		//www.socks.nec.com/translator.html --misiek.
+# http://www.socks.nec.com/translator.html --misiek.
 Patch5:		socks-trans-v1.3-PLD-patch.gz
 Patch6:		%{name}-v1.0r8.archie.diff
 Patch7:		%{name}-fhs.patch
@@ -28,6 +28,8 @@ Patch9:		%{name}-shared_libs.patch
 Prereq:		rc-scripts
 Prereq:		/sbin/chkconfig
 URL:		http://www.socks.nec.com
+BuildRequires:	autoconf
+BuildRequires:	automake
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
