@@ -1,0 +1,47 @@
+
+The patch is for signal setting problem. Signal handler didn't
+catch the signal, resulting in <defunc> processes on Linux.
+
+Index: sigfix.h
+===================================================================
+RCS file: socks5/include/sigfix.h,v
+retrieving revision 1.7.4.3
+retrieving revision 1.7.4.4
+diff -c -r1.7.4.3 -r1.7.4.4
+***************
+*** 5,11 ****
+  /* document ("Copyright") included with this distribution.                   */
+  
+  /*
+!  * $Id$
+   */
+  
+  #ifndef SIGFIX_H
+--- 5,11 ----
+  /* document ("Copyright") included with this distribution.                   */
+  
+  /*
+!  * $Id$
+   */
+  
+  #ifndef SIGFIX_H
+***************
+*** 23,28 ****
+--- 23,29 ----
+      memset(&sa, 0, sizeof(sa));
+      sa.sa_handler = func;
+      sigemptyset(&sa.sa_mask);
++ #ifndef IN_SERVER
+  #ifdef SA_RESETHAND
+      sa.sa_flags |= SA_RESETHAND;
+  #endif
+***************
+*** 32,37 ****
+--- 33,39 ----
+  #ifdef SA_RESTART 
+      sa.sa_flags |= SA_RESTART;
+  #endif
++ #endif
+      sigaction(signo, &sa, &oa);
+      return (Sig_t)oa.sa_handler;
+  }
