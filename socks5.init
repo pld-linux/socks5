@@ -31,7 +31,7 @@ case "$1" in
   start)
 	# Check if the service is already running?
 	if [ ! -f /var/lock/subsys/socks5 ]; then
-		msm_starting socks5
+		msg_starting socks5
 		daemon socks5
 		RETVAL=$?
 		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/socks5
