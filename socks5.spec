@@ -162,16 +162,3 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %{_libdir}/libsocks5.a
 %{_includedir}/socks.h
-
-%changelog
-* Sun Jan 24 1999 Wojtek ¦lusarczyk <wojtek@shadow.eu.org>
-  [1.0r8-1d]
-- fixed init-script,
-- added Group(pl),
-- fixed files permissions,
-- macro %config(noreplace) %verify(not size mtime md5) in config files,
-- minor changes.
-
-* Tue Jan 19 1999 Arkadiusz Mi¶kiewicz <misiek@misiek.eu.org>
-  [1.0r8-1d]
-- Build for PLD Linux.
