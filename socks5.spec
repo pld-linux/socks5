@@ -95,7 +95,7 @@ touch $RPM_BUILD_ROOT/etc/socks5/socks5.passwd
 
 rm -f examples/README
 
-gzip -9nf $RPM_BUILD_ROOT/usr/man/man*/*
+gzip -9nf $RPM_BUILD_ROOT%{_mandir}/man*/*
 bzip2 -9 doc/socks.faq examples/* ChangeLog
 
 cd $RPM_BUILD_ROOT/usr/bin
@@ -142,9 +142,9 @@ rm -rf $RPM_BUILD_ROOT
 %dir /etc/socks5
 %config(noreplace) %verify(not size mtime md5) /etc/socks5/libsocks5.conf
 
-%attr(644,root, man) /usr/man/man1/socks5_clients.*
-%attr(644,root, man) /usr/man/man1/runsocks.*
-%attr(644,root, man) /usr/man/man5/libsocks5.conf.*
+%attr(644,root, man) %{_mandir}/man1/socks5_clients.*
+%attr(644,root, man) %{_mandir}/man1/runsocks.*
+%attr(644,root, man) %{_mandir}/man5/libsocks5.conf.*
 
 %files server
 %defattr(644,root,root,755)
@@ -156,10 +156,10 @@ rm -rf $RPM_BUILD_ROOT
 %attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /etc/socks5/socks5.conf
 %attr(600,root,root) %config(noreplace) %verify(not size mtime md5) /etc/socks5/socks5.passwd
 
-%attr(644,root, man) /usr/man/man1/stopsocks.*
-%attr(644,root, man) /usr/man/man1/socks5.*
-%attr(644,root, man) /usr/man/man5/socks5.conf.*
-%attr(644,root, man) /usr/man/man5/socks5.passwd.*
+%attr(644,root, man) %{_mandir}/man1/stopsocks.*
+%attr(644,root, man) %{_mandir}/man1/socks5.*
+%attr(644,root, man) %{_mandir}/man5/socks5.conf.*
+%attr(644,root, man) %{_mandir}/man5/socks5.passwd.*
 
 %files devel
 %defattr(644,root,root,755)
