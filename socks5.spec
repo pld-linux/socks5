@@ -26,7 +26,7 @@ Patch8:		%{name}-DESTDIR.patch
 Patch9:		%{name}-shared_libs.patch
 Prereq:		rc-scripts
 Prereq:		/sbin/chkconfig
-URL:		http://www.socks.nec.com
+URL:		http://www.socks.nec.com/
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
