@@ -111,7 +111,7 @@ make
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/etc/{sysconfig,profile.d,rc.d/init.d,socks5}
 
-make install DESTDIR=$RPM_BUILD_ROOT
+%{__make} install DESTDIR=$RPM_BUILD_ROOT
 
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/socks5
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/socks5
