@@ -25,7 +25,7 @@ Patch5:		socks-trans-v1.3-PLD-patch.gz
 Patch6:		socks5-v1.0r8.archie.diff
 Patch7:		socks5-fhs.patch
 Patch8:		socks5-DESTDIR.patch
-Requires:	rc-scripts
+Prereq:		rc-scripts
 URL:		http://www.socks.nec.com
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
