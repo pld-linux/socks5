@@ -24,24 +24,25 @@ Patch4:		http://www.socks.nec.com/patch/socks5-v1.0r10.patch5.txt
 Patch5:		socks-trans-v1.3-PLD-patch.gz
 Patch6:		socks5-v1.0r8.archie.diff
 Patch7:		socks5-fhs.patch
+Patch8:		socks5-DESTDIR.patch
 Requires:	rc-scripts
 URL:		http://www.socks.nec.com
 BuildRoot:	/tmp/%{name}-%{version}-root
 
 %description
-Allows hosts behind a firewall to gain full Internet access.  Client
+Allows hosts behind a firewall to gain full Internet access. Client
 programs such as ping, traceroute, ftp, finger, whois, archie, and telnet
-that use SOCKS 5.0.  Also includes a dynamic link library and script that
+that use SOCKS 5.0. Also includes a dynamic link library and script that
 allows you to "sockify" programs that don't normally use SOCKS.
 
 %description -l pl
 Pakiet pozwalaj±cy komputerom znajduj±cym siê za firewallem na
-nieograniczony dostêp do Internetu.  Programy takie jak ping, traceroute,
+nieograniczony dostêp do Internetu. Programy takie jak ping, traceroute,
 ftp, finger, whois, archie oraz telnet u¿ywaj±ce SOCKS 5.0. Zawiera tak¿e
-bibliotekê dynamiczn± i skrypt pozwalaj±cy na "usockowanie" programów,
-które normalnie nie u¿ywaj± SOCKS5.
+bibliotekê dynamiczn± i skrypt pozwalaj±cy na "usockowanie" programów, które
+normalnie nie u¿ywaj± SOCKS5.
 
-%package	server
+%package server
 Summary:	SOCKS 5.0 Server Daemon
 Summary(pl):	SOCKS 5.0 Serwer
 Group:		Daemons
@@ -58,7 +59,7 @@ Serwer SOCKS 5.0 - program który uruchamia siê na serwerze mog±cym
 komunikowaæ siê bezpo¶rednio z komputerami za firewallem tak samo jak z
 komputerami w Internecie. Zawiera wsparcie dla wielow±tkowo¶ci.
 
-%package	devel
+%package devel
 Summary:	SOCKS 5.0 Development header file and libraries.
 Summary(pl):	SOCKS 5.0 pliki nag³ówkowe i biblioteki dla developerów.
 Group:		Development/Libraries
@@ -86,12 +87,15 @@ cd ../..
 %patch5 -p1
 %patch6 -p1
 %patch7 -p1
+%patch8 -p1
 
 %build
-aclocal && autoconf
-CFLAGS="$RPM_OPT_FLAGS -I../" LDFLAGS="-s" \
-./configure %{_target_platform} \
-	--prefix=%{_prefix} \
+aclocal
+autoconf
+CFLAGS="$RPM_OPT_FLAGS -I../"
+LDFLAGS="-s"
+export CFLAGS LDFLAGS
+%configure \
 	--with-threads \
 	--enable-ipv6 \
 	--with-ident \
@@ -105,13 +109,13 @@ make
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT/{etc/{sysconfig,profile.d,rc.d/init.d,socks5},usr/sbin}
+install -d $RPM_BUILD_ROOT/etc/{sysconfig,profile.d,rc.d/init.d,socks5}
 
-make install prefix=$RPM_BUILD_ROOT%{_prefix}
+make install DESTDIR=$RPM_BUILD_ROOT
 
-install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/rc.d/init.d/socks5
-install %{SOURCE2} $RPM_BUILD_ROOT%{_sysconfdir}/sysconfig/socks5
-install %{SOURCE3} %{SOURCE4} $RPM_BUILD_ROOT%{_sysconfdir}/profile.d
+install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/socks5
+install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/socks5
+install %{SOURCE3} %{SOURCE4} $RPM_BUILD_ROOT/etc/profile.d
 
 install examples/socks5.conf.gssapi $RPM_BUILD_ROOT%{_sysconfdir}/socks5/socks5.conf
 
@@ -137,8 +141,10 @@ fi
 
 %preun server
 if [ "$1" = "0" ]; then
+	if [ -f /var/lock/subsys/socks5 ]; then
+		/etc/rc.d/init.d/socks5 stop &>/dev/null
+	fi
 	/sbin/chkconfig --del socks5
-	/etc/rc.d/init.d/socks5 stop &>/dev/null
 fi
 
 %clean
@@ -165,11 +171,11 @@ rm -rf $RPM_BUILD_ROOT
 %doc examples/* ChangeLog.gz README.trans.gz
 
 %attr(755,root,root) %{_sbindir}/*
-%attr(754,root,root) %{_sysconfdir}/rc.d/init.d/*
+%attr(754,root,root) /etc/rc.d/init.d/*
 
 %attr(640,root,root) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/socks5/socks5.conf
 %attr(600,root,root) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/socks5/socks5.passwd
-%attr(640,root,root) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/sysconfig/*
+%attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /etc/sysconfig/*
 
 %{_mandir}/man1/stopsocks.*
 %{_mandir}/man1/socks5.*
