@@ -7,6 +7,7 @@ License:	freely distributable (Copyright (c) 1995,1996 NEC Corporation)
 Vendor:		Socks5 Team <socks5-comments@socks.nec.com>
 Group:		Networking/Daemons
 Source0:	%{name}-v%{version}.tar.gz
+# Source0-md5:	99d99a1723f793d7cb8e8043e72da9b1
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Source3:	%{name}.sh
