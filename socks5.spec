@@ -142,8 +142,8 @@ install -d $RPM_BUILD_ROOT%{_sysconfdir}/{sysconfig,profile.d,rc.d/init.d,socks5
 %{__make} install DESTDIR=$RPM_BUILD_ROOT
 
 install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/rc.d/init.d/socks5
-install %{SOURCE2} $RPM_BUILD_ROOT%{_sysconfdir}sysconfig/socks5
-install %{SOURCE3} %{SOURCE4} $RPM_BUILD_ROOT%{_sysconfdir}profile.d
+install %{SOURCE2} $RPM_BUILD_ROOT%{_sysconfdir}/sysconfig/socks5
+install %{SOURCE3} %{SOURCE4} $RPM_BUILD_ROOT%{_sysconfdir}/profile.d
 
 install examples/socks5.conf.gssapi $RPM_BUILD_ROOT%{_sysconfdir}/socks5/socks5.conf
 
