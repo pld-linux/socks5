@@ -134,10 +134,18 @@ chmod -R u+r $RPM_BUILD_ROOT
 %post  -p /sbin/ldconfig
 
 %post server
-%chkconfig_add
+/sbin/chkconfig --add socks5
+if [ -f /var/lock/subsys/socks5 ]; then
+	%{_sysconfdir}/rc.d/init.d/socks5 restart >&2
+fi
 
 %preun server
-%chkconfig_del
+if [ "$1" = "0" ]; then
+	if [ -f /var/lock/subsys/socks5 ]; then
+		/etc/rc.d/init.d/socks5 stop &>/dev/null
+	fi
+	/sbin/chkconfig --del socks5
+fi
 
 %clean
 rm -rf $RPM_BUILD_ROOT
