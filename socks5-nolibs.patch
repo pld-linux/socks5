@@ -1,0 +1,14 @@
+--- socks5-v1.0r11/configure.in.orig	2004-02-28 20:51:41.000000000 +0100
++++ socks5-v1.0r11/configure.in	2004-02-28 21:00:30.893341392 +0100
+@@ -260,11 +260,6 @@
+ 	AC_MSG_RESULT(unknown)
+ 	AC_MSG_WARN([Unknown IPv6 implementation.])
+     fi
+-    AC_CHECK_LIB(inet6, main)
+-    AC_CHECK_SHLIBS(libinet6)
+-    if test "yes" = "no"; then
+-    AC_DEFINE_UNQUOTED(LIBINET6_NAME)
+-    fi
+     AC_CHECK_HEADERS(resolv.h arpa/nameser.h)
+     AC_CHECK_FUNCS(gethostbyname2 getnodebyname getipnodebyname freehostent getaddrinfo freeaddrinfo)
+ fi
