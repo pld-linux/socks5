@@ -15,6 +15,7 @@ Source3:	socks5.sh
 Source4:	socks5.csh
 Patch0:		%{name}-v1.0r8.archie.diff
 Patch1:		%{name}-fhs.patch
+Requires:	rc-scripts
 URL:		http://www.socks.nec.com
 BuildRoot:	/tmp/%{name}-%{version}-root
 
