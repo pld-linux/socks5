@@ -105,7 +105,7 @@ cd ../..
 
 %build
 aclocal
-autoconf
+%{__autoconf}
 CFLAGS="%{rpmcflags} -I../"
 %configure \
 	--with-threads \
