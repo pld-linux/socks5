@@ -24,7 +24,7 @@ Patch6:		%{name}-v1.0r8.archie.diff
 Patch7:		%{name}-fhs.patch
 Patch8:		%{name}-DESTDIR.patch
 Patch9:		%{name}-shared_libs.patch
-URL:		http://www.socks.nec.com/
+URL:		http://www.socks.permeo.com/
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
