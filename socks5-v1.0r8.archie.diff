@@ -1,0 +1,13 @@
+diff -urN socks5-v1.0r8.orig/clients/archie/Makefile.in socks5-v1.0r8/clients/archie/Makefile.in
+--- socks5-v1.0r8.orig/clients/archie/Makefile.in	Tue Jan 19 20:19:42 1999
++++ socks5-v1.0r8/clients/archie/Makefile.in	Tue Jan 19 20:20:33 1999
+@@ -40,7 +40,8 @@
+ # Note this only applies to the command-line client; to change the
+ # default for the Emacs lisp version, set the archie-server variable.
+ #ARCHIE= archie.ans.net
+-ARCHIE= archie.sura.net
++#ARCHIE= archie.sura.net
++ARCHIE= archie.icm.edu.pl
+ 
+ #	Usually LDFLAGS is empty; if, after you build this, archie
+ #	 complains that it can't resolve ARCHIE.ANS.NET (or whatever

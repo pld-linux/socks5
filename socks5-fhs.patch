@@ -1,0 +1,103 @@
+diff -Nur socks5-v1.0r8/Makefile.in socks5-v1.0r8.pld/Makefile.in
+--- socks5-v1.0r8/Makefile.in	Thu Oct  1 20:16:23 1998
++++ socks5-v1.0r8.pld/Makefile.in	Sat Jun 12 13:38:28 1999
+@@ -16,7 +16,7 @@
+ 
+ prefix      = @prefix@
+ exec_prefix = @exec_prefix@
+-mandir      = $(prefix)/man
++mandir      = $(prefix)/share/man
+ 
+ all:	Makefile server lib clients shlib
+ 
+@@ -75,6 +75,7 @@
+ 	@( if [ ! -d $(mandir)/man1 ]; then mkdir -p $(mandir)/man1; fi )
+ 	@( if [ ! -d $(mandir)/man5 ]; then mkdir -p $(mandir)/man5; fi )
+ 	@( if [ ! -d $(exec_prefix)/bin ]; then mkdir -p $(exec_prefix)/bin; fi )
++	@( if [ ! -d $(exec_prefix)/sbin ]; then mkdir -p $(exec_prefix)/sbin; fi )
+ 	$(INSTALL) $(srcdir)/man/man5/socks5.conf.5 $(mandir)/man5
+ 	$(INSTALL) $(srcdir)/man/man5/socks5.passwd.5 $(mandir)/man5
+ 	$(INSTALL) $(srcdir)/man/man1/stopsocks.1 $(mandir)/man1
+diff -Nur socks5-v1.0r8/include/defs.h socks5-v1.0r8.pld/include/defs.h
+--- socks5-v1.0r8/include/defs.h	Wed Nov 18 21:41:13 1998
++++ socks5-v1.0r8.pld/include/defs.h	Sat Jun 12 13:45:22 1999
+@@ -11,7 +11,7 @@
+ #ifndef DEFS_H
+ #define DEFS_H
+ 
+-#define SOCKS5_VERSION_NAME "Socks5 v1.0r8 "
++#define SOCKS5_VERSION_NAME "Socks5 PLD Linux "
+ 
+ #ifndef P
+ #if defined(__STDC__) || defined(HAVE_FUNC_PROTOTYPE)
+diff -Nur socks5-v1.0r8/man/man1/socks5.1 socks5-v1.0r8.pld/man/man1/socks5.1
+--- socks5-v1.0r8/man/man1/socks5.1	Wed Oct  7 16:20:54 1998
++++ socks5-v1.0r8.pld/man/man1/socks5.1	Sat Jun 12 13:43:38 1999
+@@ -93,7 +93,7 @@
+ \fIhost:port\fP specifies the host and the port number on that host on which socks5 runs, instead of the default port. When you omit \fIhost\fP, socks5 uses 0.0.0.0 as the \fIhost\fP value.
+ .TP
+ SOCKS5_CONFFILE \fIfilename\fP
+-\fIfilename\fP specifies the configuration file. In most systems, the default is /etc/socks5.conf. Set the environment before running socks5. With multiple socks5 daemons, use a different configuration file for each daemon.
++\fIfilename\fP specifies the configuration file. In most systems, the default is /etc/socks5/socks5.conf. Set the environment before running socks5. With multiple socks5 daemons, use a different configuration file for each daemon.
+ .TP
+ SOCKS5_DEMAND_IDENT
+ Cause No authentication to fail when the client fails to respond to an ident request. Use SOCKS5_DEMAND_IDENT to ensure that each connection has an associated username.
+@@ -138,7 +138,7 @@
+ Specify the filename that stores the socks5 process ID. socks5 stores the PID in /tmp/socks5.pid. You can run socks5 on a port other than the default port by including the --bindintfc command line option or setting the SOCKS5_BINDINTFC environment variable. When you run socks5 on a port other than the default port, socks5 stores the PID in /tmp/socks5.pid-port. Use SOCKS5_PIDFILE to specify an alternate filename.
+ .TP
+ SOCKS5_PWDFILE \fIfilename\fP
+-Specify the password file. In most systems, the default is /etc/socks5.passwd.
++Specify the password file. In most systems, the default is /etc/socks5/socks5.passwd.
+ .TP
+ SOCKS5_TIMEOUT \fIminutes\fP
+ \fIminutes\fP specifies the maximum number of minutes the connection remains idle. After \fIminutes\fP number of minutes, socks5 disconnects. When you omit SOCKS5_TIMEOUT, socks5 disconnects after the connection is idle for 15 minutes.
+diff -Nur socks5-v1.0r8/man/man5/libsocks5.conf.5 socks5-v1.0r8.pld/man/man5/libsocks5.conf.5
+--- socks5-v1.0r8/man/man5/libsocks5.conf.5	Fri Aug 14 19:07:45 1998
++++ socks5-v1.0r8.pld/man/man5/libsocks5.conf.5	Sat Jun 12 13:41:36 1999
+@@ -191,7 +191,7 @@
+ Specify that the client library should fake all hostname lookups. Faking all hosts causes faster connections when the host lookup is slow. SOCKS5_FAKEALLHOSTS and SOCKS5_LOCALDNSONLY are mutually exclusive. Setting both causes all DNS lookups to fail.
+ .TP
+ SOCKS5_LIBCONF \fIfilename\fP
+-\fIfilename\fP specifies an alternate file name for the libsocks5.conf file. The socks5 client library usually reads the configuration file in /etc/libsocks5.conf. Use this environment variable to change the directory and file name.
++\fIfilename\fP specifies an alternate file name for the libsocks5.conf file. The socks5 client library usually reads the configuration file in /etc/socks5/libsocks5.conf. Use this environment variable to change the directory and file name.
+ .TP
+ SOCKS5_LOCALDNSONLY
+ Specify to never fake hostnames. Preventing faking limits unnecessary connections to the server on systems on which the client can resolve the same names that the server resolves. SOCKS5_FAKEALLHOSTS and SOCKS5_LOCALDNSONLY are mutually exclusive. Setting both causes all DNS lookups to fail.
+diff -Nur socks5-v1.0r8/man/man5/socks5.conf.5 socks5-v1.0r8.pld/man/man5/socks5.conf.5
+--- socks5-v1.0r8/man/man5/socks5.conf.5	Tue Oct 20 18:59:51 1998
++++ socks5-v1.0r8.pld/man/man5/socks5.conf.5	Sat Jun 12 13:42:13 1999
+@@ -2,7 +2,7 @@
+ .SH NAME
+ socks5.conf \- Configuration file for the socks5 daemon
+ .SH SYNOPSIS
+-The socks5 daemon usually reads the configuration file in /etc/socks5.conf. When you configure and build socks5 with the
++The socks5 daemon usually reads the configuration file in /etc/socks5/socks5.conf. When you configure and build socks5 with the
+ .PP
+ .RS 5
+ --with-srvconffile=\fIfilename\fP
+diff -Nur socks5-v1.0r8/man/man5/socks5.passwd.5 socks5-v1.0r8.pld/man/man5/socks5.passwd.5
+--- socks5-v1.0r8/man/man5/socks5.passwd.5	Tue Jun  3 23:42:19 1997
++++ socks5-v1.0r8.pld/man/man5/socks5.passwd.5	Sat Jun 12 13:42:30 1999
+@@ -3,7 +3,7 @@
+ .HP 16
+ socks5.passwd \- Contains usernames and passwords to authorize users in the socks5 environment
+ .SH SYNOPSIS
+-socks5 usually reads the password file, socks5.passwd, in the /etc directory. When you configure and build socks5 with the
++socks5 usually reads the password file, socks5.passwd, in the /etc/socks5 directory. When you configure and build socks5 with the
+ .PP
+ .RS 5
+ --with-srvpwdfile=pathname
+diff -Nur socks5-v1.0r8/server/Makefile.in socks5-v1.0r8.pld/server/Makefile.in
+--- socks5-v1.0r8/server/Makefile.in	Fri Oct  9 17:15:21 1998
++++ socks5-v1.0r8.pld/server/Makefile.in	Sat Jun 12 13:40:21 1999
+@@ -69,8 +69,8 @@
+ 	$(CC) $(CFLAGS) -o socks5 $(OBJS) $(LDFLAGS) $(LIBS) 
+ 
+ install:
+-	$(INSTALL) socks5 $(exec_prefix)/bin
+-	$(INSTALL) stopsocks $(exec_prefix)/bin
++	$(INSTALL) socks5 $(exec_prefix)/sbin
++	$(INSTALL) stopsocks $(exec_prefix)/sbin
+ 
+ clean:
+ 	-$(BINRM) *.o socks5 core
