@@ -3,7 +3,7 @@ Summary(pl):	Serwer Proxy
 Name:		socks5
 Copyright:	Copyright (c) 1995,1996 NEC Corporation. Freely Distributable
 Version:	1.0r10
-Release:	1
+Release:	2
 Vendor:		Socks5 Team <socks5-comments@socks.nec.com>
 Group:		Daemons
 Group(de):	Server
@@ -24,6 +24,7 @@ Patch5:		socks-trans-v1.3-PLD-patch.gz
 Patch6:		%{name}-v1.0r8.archie.diff
 Patch7:		%{name}-fhs.patch
 Patch8:		%{name}-DESTDIR.patch
+Patch9:		%{name}-shared_libs.patch
 Prereq:		rc-scripts
 URL:		http://www.socks.nec.com
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -77,6 +78,18 @@ These are the libraries and header files required to develop for NWSL
 Pakiet zawieraj±cy biblioteki i pliki nag³ówkowe dla developerów
 korzystaj±cych z SOCKS w wersji 5.0.
 
+%package static
+Summary:	SOCKS 5.0 Static libraries
+Summary(pl):	SOCKS 5.0 - biblioteki statyczne
+Group:          Development/Libraries
+Group(de):      Entwicklung/Libraries
+Group(fr):      Development/Librairies
+Group(pl):      Programowanie/Biblioteki
+Requires:       %{name}-devel = %{version}
+
+%description static
+These are the static libraries of NWSL (previously CSTC) version 5.0 of SOCKS.
+
 %prep 
 %setup  -q -T -b 0 -n %{name}-v%{version}
 cd lib
@@ -91,6 +104,7 @@ cd ../..
 %patch6 -p1
 %patch7 -p1
 %patch8 -p1
+%patch9 -p1
 
 %build
 aclocal
@@ -184,5 +198,8 @@ rm -rf $RPM_BUILD_ROOT
 
 %files devel
 %defattr(644,root,root,755)
-%{_libdir}/libsocks5.a
 %{_includedir}/socks.h
+
+%files static
+%defattr(644,root,root,755)
+%{_libdir}/libsocks5.a
