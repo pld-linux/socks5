@@ -137,8 +137,6 @@ touch $RPM_BUILD_ROOT%{_sysconfdir}/socks5/socks5.passwd
 
 rm -f examples/README
 
-gzip -9nf doc/socks.faq examples/* ChangeLog README.trans
-
 chmod -R u+r $RPM_BUILD_ROOT
 
 %clean
@@ -163,31 +161,24 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc doc/socks.faq.gz
-
+%doc doc/socks.faq
 %attr(755,root,root) %{_sysconfdir}/profile.d/socks5.*
-
 %attr(755,root,root) %{_libdir}/*.so
 %attr(755,root,root) %{_bindir}/*
-
 %dir %{_sysconfdir}/socks5
 %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/socks5/libsocks5.conf
-
 %{_mandir}/man1/socks5_clients.*
 %{_mandir}/man1/runsocks.*
 %{_mandir}/man5/libsocks5.conf.*
 
 %files server
 %defattr(644,root,root,755)
-%doc examples/* ChangeLog.gz README.trans.gz
-
+%doc examples/* ChangeLog README.trans
 %attr(755,root,root) %{_sbindir}/*
 %attr(754,root,root) /etc/rc.d/init.d/*
-
 %attr(640,root,root) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/socks5/socks5.conf
 %attr(600,root,root) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/socks5/socks5.passwd
 %attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /etc/sysconfig/*
-
 %{_mandir}/man1/stopsocks.*
 %{_mandir}/man1/socks5.*
 %{_mandir}/man5/socks5.conf.*
