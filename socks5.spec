@@ -104,7 +104,7 @@ cd ../..
 %patch9 -p1
 
 %build
-aclocal
+%{__aclocal}
 %{__autoconf}
 CFLAGS="%{rpmcflags} -I../"
 %configure \
