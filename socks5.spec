@@ -27,7 +27,7 @@ Patch7:		socks5-fhs.patch
 Patch8:		socks5-DESTDIR.patch
 Requires:	rc-scripts
 URL:		http://www.socks.nec.com
-BuildRoot:	/tmp/%{name}-%{version}-root
+BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
 Allows hosts behind a firewall to gain full Internet access. Client
