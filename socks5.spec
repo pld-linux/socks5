@@ -83,7 +83,7 @@ make
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT/etc/{rc.d/init.d,socks5}
+install -d $RPM_BUILD_ROOT/{etc/{rc.d/init.d,socks5},usr/sbin}
 
 make install prefix=$RPM_BUILD_ROOT/usr
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/socks5
@@ -106,6 +106,7 @@ mv rping	s5ping
 mv rtelnet	s5telnet
 mv rtraceroute	s5traceroute
 mv rwhois	s5whois
+mv socks5	../sbin
 
 chmod -R u+r $RPM_BUILD_ROOT
 
@@ -117,8 +118,6 @@ chmod -R u+r $RPM_BUILD_ROOT
 if test -r /var/run/socks5.pid; then
 	/etc/rc.d/init.d/socks5 stop >&2
 	/etc/rc.d/init.d/socks5 start >&2
-else
-	echo "Run \"/etc/rc.d/init.d/socks5 start\" to start socks5 daemon."
 fi
 
 %preun server
@@ -141,7 +140,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) /usr/bin/s5*
 
 %dir /etc/socks5
-%attr(644,root,root) %config(noreplace) %verify(not size mtime md5) /etc/socks5/libsocks5.conf
+%config(noreplace) %verify(not size mtime md5) /etc/socks5/libsocks5.conf
 
 %attr(644,root, man) /usr/man/man1/socks5_clients.*
 %attr(644,root, man) /usr/man/man1/runsocks.*
@@ -151,7 +150,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc examples ChangeLog.bz2
 
-%attr(755,root,root) /usr/bin/socks5
+%attr(755,root,root) /usr/sbin/socks5
 %attr(700,root,root) /etc/rc.d/init.d/socks5
 
 %attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /etc/socks5/socks5.conf
@@ -163,8 +162,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(644,root, man) /usr/man/man5/socks5.passwd.*
 
 %files devel
-%attr(644,root,root) /usr/lib/libsocks5.a
-%attr(644,root,root) /usr/include/socks.h
+%defattr(644,root,root,755)
+/usr/lib/libsocks5.a
+/usr/include/socks.h
 
 %changelog
 * Sun Jan 24 1999 Wojtek ¦lusarczyk <wojtek@shadow.eu.org>
