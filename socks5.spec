@@ -94,7 +94,7 @@ Biblioteki statyczne NWSL (poprzednio CSTC) wersji 5.0 SOCKS.
 %prep
 %setup -q -n %{name}-v%{version}
 cd include
-#%patch0 -p0
+%patch0 -p0
 cd ..
 # trans patch is for v1.0r10
 %{__perl} -pi -e 's/Socks5 v1\.0r11/Socks5 v1.0r10/' include/defs.h
