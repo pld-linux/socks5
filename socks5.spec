@@ -1,18 +1,21 @@
 Summary:	Proxy server
-Summary(pl):	Proxy serwer
+Summary(pl):	Serwer Proxy 
 Name:		socks5
 Copyright:	Copyright (c) 1995,1996 NEC Corporation. Freely Distributable
 Version:	1.0r8
-Release:	2d
+Release:	3
 Vendor:		Socks5 Team <socks5-comments@socks.nec.com>
-Group:		Networking
-Group(pl):	Sieci
+Group:		Daemons
+Group(pl):	Swerwery
 #########	ftp://ftp.fasta.fh-dortmund.de/pub/linux/
 Source0:	%{name}-v%{version}.tar.gz
 Source1:	socks5.init
-Patch:		%{name}-v1.0r8.archie.diff
-URL:		http://www.socks.nec.com/
-Prereq:		/sbin/chkconfig
+Source2:	socks5.sysconfig
+Source3:	socks5.sh
+Source4:	socks5.csh
+Patch0:		%{name}-v1.0r8.archie.diff
+Patch1:		%{name}-fhs.patch
+URL:		http://www.socks.nec.com
 BuildRoot:	/tmp/%{name}-%{version}-root
 
 %description
@@ -33,8 +36,8 @@ na "usockowanie" programów, które normalnie nie u¿ywaj± SOCKS5.
 %package	server
 Summary:	SOCKS 5.0 Server Daemon
 Summary(pl):	SOCKS 5.0 Serwer
-Group:		Networking/Daemons
-Group(pl):	Sieci/Demony
+Group:		Daemons
+Group(pl):	Serwery
 Requires:	%{name} = %{version}
 
 %description server
@@ -63,8 +66,9 @@ Pakiet zawieraj±cy biblioteki i pliki nag³ówkowe dla developerów
 korzystaj±cych z SOCKS w wersji 5.0.
 
 %prep 
-%setup -q -T -b 0 -n %{name}-v%{version}
-%patch -p1
+%setup  -q -T -b 0 -n %{name}-v%{version}
+%patch0 -p1
+%patch1 -p1
 
 %build
 autoconf
@@ -72,23 +76,27 @@ CFLAGS="$RPM_OPT_FLAGS" LDFLAGS="-s" \
 ./configure %{_target_platform} \
 	--prefix=/usr \
 	--with-threads \
-	--with-krb5 \
+	--with-krb5=%{_prefix}/athena \
 	--with-ident \
 	--with-libconffile=/etc/socks5/libsocks5.conf \
 	--with-srvconffile=/etc/socks5/socks5.conf \
 	--with-srvpwdfile=/etc/socks5/socks5.passwd \
 	--with-srvpidfile=/var/run/socks5.pid \
-	--with-srvidtfile=/tmp/.socks5.ident
+	--with-srvidtfile=/tmp/.socks5.ident 
 make
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT/{etc/{rc.d/init.d,socks5},usr/sbin}
+install -d $RPM_BUILD_ROOT/{etc/{sysconfig,profile.d,rc.d/init.d,socks5},usr/sbin}
 
-make install prefix=$RPM_BUILD_ROOT/usr
+make install prefix=$RPM_BUILD_ROOT%{_prefix}
+
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/socks5
+install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/socks5
+install %{SOURCE3} %{SOURCE4} $RPM_BUILD_ROOT/etc/profile.d
 
 install examples/socks5.conf.singlehomed $RPM_BUILD_ROOT/etc/socks5/socks5.conf
+
 echo "socks5 - - - - -" > $RPM_BUILD_ROOT/etc/socks5/libsocks5.conf
 
 touch $RPM_BUILD_ROOT/etc/socks5/socks5.passwd
@@ -96,17 +104,7 @@ touch $RPM_BUILD_ROOT/etc/socks5/socks5.passwd
 rm -f examples/README
 
 gzip -9nf $RPM_BUILD_ROOT%{_mandir}/man*/*
-bzip2 -9 doc/socks.faq examples/* ChangeLog
-
-cd $RPM_BUILD_ROOT%{_bindir}
-mv rarchie	s5archie
-mv rfinger	s5finger
-mv rftp		s5ftp
-mv rping	s5ping
-mv rtelnet	s5telnet
-mv rtraceroute	s5traceroute
-mv rwhois	s5whois
-mv socks5	../sbin
+gzip -9nf doc/socks.faq examples/* ChangeLog
 
 chmod -R u+r $RPM_BUILD_ROOT
 
@@ -115,15 +113,14 @@ chmod -R u+r $RPM_BUILD_ROOT
 
 %post server
 /sbin/chkconfig --add socks5
-if test -r /var/run/socks5.pid; then
-	/etc/rc.d/init.d/socks5 stop >&2
-	/etc/rc.d/init.d/socks5 start >&2
+if [ -f /var/lock/subsys/socks5 ]; then
+	/etc/rc.d/init.d/socks5 restart >&2
 fi
 
 %preun server
 if [ "$1" = "0" ]; then
 	/sbin/chkconfig --del socks5
-	/etc/rc.d/init.d/socks5 stop >&2
+	/etc/rc.d/init.d/socks5 stop &>/dev/null
 fi
 
 %clean
@@ -131,13 +128,12 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc doc/socks.faq.bz2
+%doc doc/socks.faq.gz
+
+%attr(755,root,root) /etc/profile.d/socks5.*
 
 %attr(755,root,root) %{_libdir}/*.so
-
-%attr(755,root,root) %{_bindir}/stopsocks
-%attr(755,root,root) %{_bindir}/runsocks
-%attr(755,root,root) %{_bindir}/s5*
+%attr(755,root,root) %{_bindir}/*
 
 %dir /etc/socks5
 %config(noreplace) %verify(not size mtime md5) /etc/socks5/libsocks5.conf
@@ -148,13 +144,14 @@ rm -rf $RPM_BUILD_ROOT
 
 %files server
 %defattr(644,root,root,755)
-%doc examples ChangeLog.bz2
+%doc examples/* ChangeLog.gz
 
 %attr(755,root,root) %{_sbindir}/socks5
-%attr(700,root,root) /etc/rc.d/init.d/socks5
+%attr(755,root,root) /etc/rc.d/init.d/*
 
 %attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /etc/socks5/socks5.conf
 %attr(600,root,root) %config(noreplace) %verify(not size mtime md5) /etc/socks5/socks5.passwd
+%attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /etc/sysconfig/*
 
 %{_mandir}/man1/stopsocks.*
 %{_mandir}/man1/socks5.*
@@ -177,14 +174,4 @@ rm -rf $RPM_BUILD_ROOT
 
 * Tue Jan 19 1999 Arkadiusz Mi¶kiewicz <misiek@misiek.eu.org>
   [1.0r8-1d]
-- PLD-ized.
-
-* Thu Oct 8 1998 Scott Stone <sstone@turbolinux.com>
-- Built for TL 3.0
-- Fixed .spec file
-
-* Wed Jul 22 1998 Daniel Deimert <d1dd@dtek.chalmers.se>
-- Updated to 1.0r6
-
-* Mon Jul 13 1998 Daniel Deimert <d1dd@dtek.chalmers.se>
-- Added Patches for RedHat 5.1
+- Build for PLD Linux.
