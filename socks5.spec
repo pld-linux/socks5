@@ -3,7 +3,7 @@ Summary(pl):	Serwer Proxy
 Name:		socks5
 Copyright:	Copyright (c) 1995,1996 NEC Corporation. Freely Distributable
 Version:	1.0r10
-Release:	2
+Release:	3
 Vendor:		Socks5 Team <socks5-comments@socks.nec.com>
 Group:		Daemons
 Group(de):	Server
@@ -26,6 +26,7 @@ Patch7:		%{name}-fhs.patch
 Patch8:		%{name}-DESTDIR.patch
 Patch9:		%{name}-shared_libs.patch
 Prereq:		rc-scripts
+Prereq:		/sbin/chkconfig
 URL:		http://www.socks.nec.com
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -56,7 +57,7 @@ SOCKS 5.0 Server - program being run on a host that can communicate
 directly to hosts behind the firewall as well as hosts on the Internet
 at large. Includes multithreading support via linux threads.
 
-%description -l pl
+%description server -l pl
 Serwer SOCKS 5.0 - program ktÛry uruchamia siÍ na serwerze mog±cym
 komunikowaÊ siÍ bezpo∂rednio z komputerami za firewallem tak samo jak
 z komputerami w Internecie. Zawiera wsparcie dla wielow±tkowo∂ci.
@@ -66,29 +67,41 @@ Summary:	SOCKS 5.0 Development header file and libraries
 Summary(pl):	SOCKS 5.0 - pliki nag≥Ûwkowe i biblioteki dla developerÛw
 Group:		Development/Libraries
 Group(de):	Entwicklung/Libraries
+Group(es):	Desarrollo/Bibliotecas
 Group(fr):	Development/Librairies
 Group(pl):	Programowanie/Biblioteki
+Group(pt_BR):	Desenvolvimento/Bibliotecas
+Group(ru):	Ú¡⁄“¡¬œ‘À¡/‚…¬Ã…œ‘≈À…
+Group(uk):	Úœ⁄“œ¬À¡/‚¶¬Ã¶œ‘≈À…
 Requires:	%{name} = %{version}
 
 %description devel
 These are the libraries and header files required to develop for NWSL
 (previously CSTC) version 5.0 of SOCKS.
 
-%description -l pl devel
+%description devel -l pl
 Pakiet zawieraj±cy biblioteki i pliki nag≥Ûwkowe dla developerÛw
 korzystaj±cych z SOCKS w wersji 5.0.
 
 %package static
 Summary:	SOCKS 5.0 Static libraries
 Summary(pl):	SOCKS 5.0 - biblioteki statyczne
-Group:          Development/Libraries
-Group(de):      Entwicklung/Libraries
-Group(fr):      Development/Librairies
-Group(pl):      Programowanie/Biblioteki
-Requires:       %{name}-devel = %{version}
+Group:		Development/Libraries
+Group(de):	Entwicklung/Libraries
+Group(es):	Desarrollo/Bibliotecas
+Group(fr):	Development/Librairies
+Group(pl):	Programowanie/Biblioteki
+Group(pt_BR):	Desenvolvimento/Bibliotecas
+Group(ru):	Ú¡⁄“¡¬œ‘À¡/‚…¬Ã…œ‘≈À…
+Group(uk):	Úœ⁄“œ¬À¡/‚¶¬Ã¶œ‘≈À…
+Requires:	%{name}-devel = %{version}
 
 %description static
-These are the static libraries of NWSL (previously CSTC) version 5.0 of SOCKS.
+These are the static libraries of NWSL (previously CSTC) version 5.0
+of SOCKS.
+
+%description static -l pl
+Biblioteki statyczne NWSL (poprzednio CSTC) wersji 5.0 SOCKS.
 
 %prep 
 %setup  -q -T -b 0 -n %{name}-v%{version}
@@ -144,6 +157,9 @@ gzip -9nf doc/socks.faq examples/* ChangeLog README.trans
 
 chmod -R u+r $RPM_BUILD_ROOT
 
+%clean
+rm -rf $RPM_BUILD_ROOT
+
 %preun -p /sbin/ldconfig
 %post  -p /sbin/ldconfig
 
@@ -160,9 +176,6 @@ if [ "$1" = "0" ]; then
 	fi
 	/sbin/chkconfig --del socks5
 fi
-
-%clean
-rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
