@@ -1,0 +1,7 @@
+alias	s5arch="rarchie"
+alias	s5finger="rfinger"
+alias	s5ftp="rftp"
+alias	s5ping="rping"
+alias	s5telnet="rtelnet"
+alias	s5traceroute="rtraceroute"
+alias	s5whois="rwhois"
