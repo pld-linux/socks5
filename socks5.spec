@@ -1,32 +1,34 @@
 Summary:	Proxy server
 Summary(pl):	Serwer Proxy
 Name:		socks5
-Version:	1.0r10
-Release:	3
-License:	freely distributable (Copyright (c) 1995,1996 NEC Corporation)
+Version:	1.0r11
+Release:	1
+License:	non-commercial, not distributable
 Vendor:		Socks5 Team <socks5-comments@socks.nec.com>
 Group:		Networking/Daemons
+# http://archive.socks.permeo.com/cgi-bin/download.pl (requires registration)
 Source0:	%{name}-v%{version}.tar.gz
-# Source0-md5:	99d99a1723f793d7cb8e8043e72da9b1
+# NoSource0-md5: 4f4f3932bbb9a8d47a63502a6820c948
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Source3:	%{name}.sh
 Source4:	%{name}.csh
-Patch0:		http://www.socks.nec.com/patch/%{name}-v1.0r10.patch1.txt
-Patch1:		http://www.socks.nec.com/patch/%{name}-v1.0r10.patch2.txt
-Patch2:		http://www.socks.nec.com/patch/%{name}-v1.0r10.patch3.txt
-Patch3:		http://www.socks.nec.com/patch/%{name}-v1.0r10.patch4.txt
-Patch4:		http://www.socks.nec.com/patch/%{name}-v1.0r10.patch5.txt
+NoSource:	0
+Patch0:		http://www.socks.nec.com/patch/%{name}-v1.0r11.patch1.txt
 # This is modified version of translator patch:
-# http://www.socks.nec.com/translator.html --misiek.
-Patch5:		socks-trans-v1.3-PLD-patch.gz
-Patch6:		%{name}-v1.0r8.archie.diff
-Patch7:		%{name}-fhs.patch
-Patch8:		%{name}-DESTDIR.patch
-Patch9:		%{name}-shared_libs.patch
+# http://archive.socks.permeo.com/60021888/socks-trans-v1.3-patch.gz
+Patch1:		http://archive.socks.permeo.com/60021888/socks-trans-v1.3-patch.gz
+NoPatch:	1
+Patch2:		%{name}-v1.0r8.archie.diff
+Patch3:		%{name}-fhs.patch
+Patch4:		%{name}-DESTDIR.patch
+Patch5:		%{name}-shared_libs.patch
+Patch6:		%{name}-stdarg.patch
+Patch7:		%{name}-nolibs.patch
 URL:		http://www.socks.permeo.com/
-BuildRequires:	autoconf
-BuildRequires:	automake
+BuildRequires:	autoconf >= 2.4
+BuildRequires:	heimdal-devel
+BuildRequires:	libident-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -49,7 +51,7 @@ Summary(pl):	Serwer SOCKS 5.0
 Group:		Daemons
 PreReq:		rc-scripts
 Requires(post,preun):	/sbin/chkconfig
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{version}-%{release}
 
 %description server
 SOCKS 5.0 Server - program being run on a host that can communicate
@@ -65,7 +67,7 @@ z komputerami w Internecie. Zawiera wsparcie dla wielow±tkowo¶ci.
 Summary:	SOCKS 5.0 Development header file and libraries
 Summary(pl):	SOCKS 5.0 - pliki nag³ówkowe i biblioteki dla developerów
 Group:		Development/Libraries
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{version}-%{release}
 
 %description devel
 These are the libraries and header files required to develop for NWSL
@@ -79,7 +81,7 @@ korzystaj±cych z SOCKS w wersji 5.0.
 Summary:	SOCKS 5.0 Static libraries
 Summary(pl):	SOCKS 5.0 - biblioteki statyczne
 Group:		Development/Libraries
-Requires:	%{name}-devel = %{version}
+Requires:	%{name}-devel = %{version}-%{release}
 
 %description static
 These are the static libraries of NWSL (previously CSTC) version 5.0
@@ -89,42 +91,45 @@ of SOCKS.
 Biblioteki statyczne NWSL (poprzednio CSTC) wersji 5.0 SOCKS.
 
 %prep
-%setup  -q -T -b 0 -n %{name}-v%{version}
-cd lib
+%setup -q -n %{name}-v%{version}
+cd include
 %patch0 -p0
-%patch2 -p0
-%patch3 -p0
-cd ../clients/ftp
+cd ..
+# trans patch is for v1.0r10
+%{__perl} -pi -e 's/Socks5 v1\.0r11/Socks5 v1.0r10/' include/defs.h
+%{__perl} -pi -e 's/ranges from 1 to 255/ranges from 1 to 254/' lib/hostname.c
 %patch1 -p0
-%patch4 -p0
-cd ../..
+%{__perl} -pi -e 's/Socks5 v1.0r10/Socks5 v1.0r11/' include/defs.h
+%{__perl} -pi -e 's/ranges from 1 to 254/ranges from 1 to 255/' lib/hostname.c
+%patch2 -p1
+%patch3 -p1
+%patch4 -p1
 %patch5 -p1
 %patch6 -p1
 %patch7 -p1
-%patch8 -p1
-%patch9 -p1
 
 %build
-%{__aclocal}
+# aclocal.m4 is local only, don't use aclocal
 %{__autoconf}
-CFLAGS="%{rpmcflags} -I../"
+CFLAGS="%{rpmcflags} -I.."
 %configure \
 	--with-threads \
 	--enable-ipv6 \
 	--with-ident \
+	--with-krb5=/usr \
 	--with-libconffile=%{_sysconfdir}/socks5/libsocks5.conf \
 	--with-srvconffile=%{_sysconfdir}/socks5/socks5.conf \
 	--with-srvpwdfile=%{_sysconfdir}/socks5/socks5.passwd \
 	--with-srvpidfile=/var/run/socks5.pid \
 	--with-srvidtfile=/tmp/.socks5.ident
-#	--with-krb5=%{_prefix}/athena \
 %{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT%{_sysconfdir}/{sysconfig,profile.d,rc.d/init.d,socks5}
+install -d $RPM_BUILD_ROOT{/etc/{sysconfig,profile.d,rc.d/init.d},%{_sysconfdir}/socks5}
 
-%{__make} install DESTDIR=$RPM_BUILD_ROOT
+%{__make} install \
+	DESTDIR=$RPM_BUILD_ROOT
 
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/socks5
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/socks5
