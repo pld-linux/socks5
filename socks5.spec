@@ -6,63 +6,66 @@ Version:	1.0r10
 Release:	1
 Vendor:		Socks5 Team <socks5-comments@socks.nec.com>
 Group:		Daemons
+Group(de):	Server
 Group(pl):	Serwery
-# The latest release version of socks5 is only available
-# from http://www.socks.nec.com/
 Source0:	%{name}-v%{version}.tar.gz
-Source1:	socks5.init
-Source2:	socks5.sysconfig
-Source3:	socks5.sh
-Source4:	socks5.csh
-Patch0:		http://www.socks.nec.com/patch/socks5-v1.0r10.patch1.txt
-Patch1:		http://www.socks.nec.com/patch/socks5-v1.0r10.patch2.txt
-Patch2:		http://www.socks.nec.com/patch/socks5-v1.0r10.patch3.txt
-Patch3:		http://www.socks.nec.com/patch/socks5-v1.0r10.patch4.txt
-Patch4:		http://www.socks.nec.com/patch/socks5-v1.0r10.patch5.txt
+Source1:	%{name}.init
+Source2:	%{name}.sysconfig
+Source3:	%{name}.sh
+Source4:	%{name}.csh
+Patch0:		http://www.socks.nec.com/patch/%{name}-v1.0r10.patch1.txt
+Patch1:		http://www.socks.nec.com/patch/%{name}-v1.0r10.patch2.txt
+Patch2:		http://www.socks.nec.com/patch/%{name}-v1.0r10.patch3.txt
+Patch3:		http://www.socks.nec.com/patch/%{name}-v1.0r10.patch4.txt
+Patch4:		http://www.socks.nec.com/patch/%{name}-v1.0r10.patch5.txt
 # This is modified version of translator patch:	
-# http://www.socks.nec.com/translator.html --misiek.
+# http:		//www.socks.nec.com/translator.html --misiek.
 Patch5:		socks-trans-v1.3-PLD-patch.gz
-Patch6:		socks5-v1.0r8.archie.diff
-Patch7:		socks5-fhs.patch
-Patch8:		socks5-DESTDIR.patch
+Patch6:		%{name}-v1.0r8.archie.diff
+Patch7:		%{name}-fhs.patch
+Patch8:		%{name}-DESTDIR.patch
 Prereq:		rc-scripts
 URL:		http://www.socks.nec.com
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
 Allows hosts behind a firewall to gain full Internet access. Client
-programs such as ping, traceroute, ftp, finger, whois, archie, and telnet
-that use SOCKS 5.0. Also includes a dynamic link library and script that
-allows you to "sockify" programs that don't normally use SOCKS.
+programs such as ping, traceroute, ftp, finger, whois, archie, and
+telnet that use SOCKS 5.0. Also includes a dynamic link library and
+script that allows you to "sockify" programs that don't normally use
+SOCKS.
 
 %description -l pl
 Pakiet pozwalaj±cy komputerom znajduj±cym siê za firewallem na
-nieograniczony dostêp do Internetu. Programy takie jak ping, traceroute,
-ftp, finger, whois, archie oraz telnet u¿ywaj±ce SOCKS 5.0. Zawiera tak¿e
-bibliotekê dynamiczn± i skrypt pozwalaj±cy na "usockowanie" programów, które
-normalnie nie u¿ywaj± SOCKS5.
+nieograniczony dostêp do Internetu. Programy takie jak ping,
+traceroute, ftp, finger, whois, archie oraz telnet u¿ywaj±ce SOCKS
+5.0. Zawiera tak¿e bibliotekê dynamiczn± i skrypt pozwalaj±cy na
+"usockowanie" programów, które normalnie nie u¿ywaj± SOCKS5.
 
 %package server
 Summary:	SOCKS 5.0 Server Daemon
-Summary(pl):	SOCKS 5.0 Serwer
+Summary(pl):	Serwer SOCKS 5.0
 Group:		Daemons
+Group(de):	Server
 Group(pl):	Serwery
 Requires:	%{name} = %{version}
 
 %description server
 SOCKS 5.0 Server - program being run on a host that can communicate
-directly to hosts behind the firewall as well as hosts on the Internet at
-large. Includes multithreading support via linux threads.
+directly to hosts behind the firewall as well as hosts on the Internet
+at large. Includes multithreading support via linux threads.
 
 %description -l pl
 Serwer SOCKS 5.0 - program który uruchamia siê na serwerze mog±cym
-komunikowaæ siê bezpo¶rednio z komputerami za firewallem tak samo jak z
-komputerami w Internecie. Zawiera wsparcie dla wielow±tkowo¶ci.
+komunikowaæ siê bezpo¶rednio z komputerami za firewallem tak samo jak
+z komputerami w Internecie. Zawiera wsparcie dla wielow±tkowo¶ci.
 
 %package devel
-Summary:	SOCKS 5.0 Development header file and libraries.
-Summary(pl):	SOCKS 5.0 pliki nag³ówkowe i biblioteki dla developerów.
+Summary:	SOCKS 5.0 Development header file and libraries
+Summary(pl):	SOCKS 5.0 - pliki nag³ówkowe i biblioteki dla developerów
 Group:		Development/Libraries
+Group(de):	Entwicklung/Libraries
+Group(fr):	Development/Librairies
 Group(pl):	Programowanie/Biblioteki
 Requires:	%{name} = %{version}
 
@@ -92,9 +95,7 @@ cd ../..
 %build
 aclocal
 autoconf
-CFLAGS="$RPM_OPT_FLAGS -I../"
-LDFLAGS="-s"
-export CFLAGS LDFLAGS
+CFLAGS="%{rpmcflags} -I../"
 %configure \
 	--with-threads \
 	--enable-ipv6 \
@@ -103,7 +104,7 @@ export CFLAGS LDFLAGS
 	--with-srvconffile=%{_sysconfdir}/socks5/socks5.conf \
 	--with-srvpwdfile=%{_sysconfdir}/socks5/socks5.passwd \
 	--with-srvpidfile=/var/run/socks5.pid \
-	--with-srvidtfile=/tmp/.socks5.ident  \
+	--with-srvidtfile=/tmp/.socks5.ident
 #	--with-krb5=%{_prefix}/athena \
 %{__make}
 
@@ -125,7 +126,6 @@ touch $RPM_BUILD_ROOT%{_sysconfdir}/socks5/socks5.passwd
 
 rm -f examples/README
 
-gzip -9nf $RPM_BUILD_ROOT%{_mandir}/man*/*
 gzip -9nf doc/socks.faq examples/* ChangeLog README.trans
 
 chmod -R u+r $RPM_BUILD_ROOT
