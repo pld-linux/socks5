@@ -2,7 +2,7 @@ Summary:	Proxy server
 Summary(pl):	Serwer Proxy
 Name:		socks5
 Version:	1.0r11
-Release:	1
+Release:	2
 License:	non-commercial, not distributable
 Vendor:		Socks5 Team <socks5-comments@socks.nec.com>
 Group:		Networking/Daemons
@@ -29,6 +29,7 @@ URL:		http://www.socks.permeo.com/
 BuildRequires:	autoconf >= 2.4
 BuildRequires:	heimdal-devel
 BuildRequires:	libident-devel
+Requires:	setup >= 2.4.6-2
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -126,14 +127,14 @@ CFLAGS="%{rpmcflags} -I.."
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{/etc/{sysconfig,profile.d,rc.d/init.d},%{_sysconfdir}/socks5}
+install -d $RPM_BUILD_ROOT{/etc/{sysconfig,shrc.d,rc.d/init.d},%{_sysconfdir}/socks5}
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/socks5
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/socks5
-install %{SOURCE3} %{SOURCE4} $RPM_BUILD_ROOT/etc/profile.d
+install %{SOURCE3} %{SOURCE4} $RPM_BUILD_ROOT/etc/shrc.d
 
 install examples/socks5.conf.gssapi $RPM_BUILD_ROOT%{_sysconfdir}/socks5/socks5.conf
 
@@ -168,7 +169,7 @@ fi
 %files
 %defattr(644,root,root,755)
 %doc doc/socks.faq
-%attr(755,root,root) /etc/profile.d/socks5.*
+%attr(755,root,root) /etc/shrc.d/socks5.*
 %attr(755,root,root) %{_libdir}/*.so
 %attr(755,root,root) %{_bindir}/*
 %dir %{_sysconfdir}/socks5
