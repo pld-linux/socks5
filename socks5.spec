@@ -150,7 +150,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc examples ChangeLog.bz2
 
-%attr(755,root,root) /usr/sbin/socks5
+%attr(755,root,root) %{_sbindir}/socks5
 %attr(700,root,root) /etc/rc.d/init.d/socks5
 
 %attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /etc/socks5/socks5.conf
@@ -164,7 +164,7 @@ rm -rf $RPM_BUILD_ROOT
 %files devel
 %defattr(644,root,root,755)
 %{_libdir}/libsocks5.a
-/usr/include/socks.h
+%{_includedir}/socks.h
 
 %changelog
 * Sun Jan 24 1999 Wojtek ¦lusarczyk <wojtek@shadow.eu.org>
