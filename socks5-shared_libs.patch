@@ -1,0 +1,24 @@
+diff -urN socks5-v1.0r10/aclocal.m4 socks5-v1.0r10.patch/aclocal.m4
+--- socks5-v1.0r10/aclocal.m4	Thu May 27 18:47:08 1999
++++ socks5-v1.0r10.patch/aclocal.m4	Sun Aug 19 20:31:16 2001
+@@ -104,7 +104,7 @@
+ if test "$ac_cv_func_dlopen" = "yes" -o "$ac_cv_func_shl_load" = "yes"; then
+ 	SHARED_LIBSOCKS5_CFLAGS="-DFOR_SHARED_LIBRARY -DIN_LIBRARY"
+ dnl can't socksify HP 9.* applications even it has shl_load()
+-	if test  "$ac_cv_func_dlopen" = "yes"; then SHLIB_LIB="libsocks5_sh.so"; fi
++	if test  "$ac_cv_func_dlopen" = "yes"; then SHLIB_LIB="libsocks5.so"; fi
+ 	case `uname -rs` in
+ 	UNIX_SV*|UNIX_System_V*)
+ 		SHLIB_LFLAGS="-G"
+diff -urN socks5-v1.0r10/shlib/Makefile.in socks5-v1.0r10.patch/shlib/Makefile.in
+--- socks5-v1.0r10/shlib/Makefile.in	Thu May 27 18:48:27 1999
++++ socks5-v1.0r10.patch/shlib/Makefile.in	Sun Aug 19 20:30:05 2001
+@@ -52,7 +52,7 @@
+ runsocks: $(srcdir)/runsocks.in ../config.status
+ 	(cd ..; CONFIG_FILES=shlib/runsocks CONFIG_HEADERS= ./config.status)
+ 
+-libsocks5_sh.so: $(OBJS)
++libsocks5.so: $(OBJS)
+ 	$(SHLIB_LD) -o $@ $(SHLIB_LFLAGS) $(OBJS) $(LDFLAGS) $(SHLIB_LIBS) $(DLLIBS)
+ 
+ install: Makefile $(SHLIB_LIB) runsocks
