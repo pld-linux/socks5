@@ -1,5 +1,5 @@
 Summary:	Proxy server
-Summary(pl):	Serwer Proxy 
+Summary(pl):	Serwer Proxy
 Name:		socks5
 Version:	1.0r10
 Release:	3
@@ -16,7 +16,7 @@ Patch1:		http://www.socks.nec.com/patch/%{name}-v1.0r10.patch2.txt
 Patch2:		http://www.socks.nec.com/patch/%{name}-v1.0r10.patch3.txt
 Patch3:		http://www.socks.nec.com/patch/%{name}-v1.0r10.patch4.txt
 Patch4:		http://www.socks.nec.com/patch/%{name}-v1.0r10.patch5.txt
-# This is modified version of translator patch:	
+# This is modified version of translator patch:
 # http://www.socks.nec.com/translator.html --misiek.
 Patch5:		socks-trans-v1.3-PLD-patch.gz
 Patch6:		%{name}-v1.0r8.archie.diff
@@ -87,7 +87,7 @@ of SOCKS.
 %description static -l pl
 Biblioteki statyczne NWSL (poprzednio CSTC) wersji 5.0 SOCKS.
 
-%prep 
+%prep
 %setup  -q -T -b 0 -n %{name}-v%{version}
 cd lib
 %patch0 -p0
