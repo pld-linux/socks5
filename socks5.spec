@@ -1,9 +1,10 @@
 Summary:	Proxy server
 Summary(pl):	Proxy serwer
 Name:		socks5
-Copyright:	Copyright (c) 1995,1996 NEC Corporation.  Freely Distributable
+Copyright:	Copyright (c) 1995,1996 NEC Corporation. Freely Distributable
 Version:	1.0r8
 Release:	2d
+Vendor:		Socks5 Team <socks5-comments@socks.nec.com>
 Group:		Networking
 Group(pl):	Sieci
 #########	ftp://ftp.fasta.fh-dortmund.de/pub/linux/
@@ -11,10 +12,8 @@ Source0:	%{name}-v%{version}.tar.gz
 Source1:	socks5.init
 Patch:		%{name}-v1.0r8.archie.diff
 URL:		http://www.socks.nec.com/
-Prereq:		/sbin/ldconfig
 Prereq:		/sbin/chkconfig
-Vendor:		Socks5 Team <socks5-comments@socks.nec.com>
-BuildRoot:	/var/tmp/buildroot-%{name}-%{version}
+BuildRoot:	/tmp/%{name}-%{version}-root
 
 %description
 Allows hosts behind a firewall to gain full Internet access.
@@ -36,6 +35,7 @@ Summary:	SOCKS 5.0 Server Daemon
 Summary(pl):	SOCKS 5.0 Serwer
 Group:		Networking/Daemons
 Group(pl):	Sieci/Demony
+Requires:	%{name} = %{version}
 
 %description server
 SOCKS 5.0 Server - program being run on a host that can communicate directly
@@ -52,6 +52,7 @@ Summary:	SOCKS 5.0 Development header file and libraries.
 Summary(pl):	SOCKS 5.0 pliki nag³ówkowe i biblioteki dla developerów.
 Group:		Development/Libraries
 Group(pl):	Programowanie/Biblioteki
+Requires:	%{name} = %{version}
 
 %description devel
 These are the libraries and header files required to develop for NWSL 
@@ -67,8 +68,8 @@ korzystaj±cych z SOCKS w wersji 5.0.
 
 %build
 autoconf
-CFLAGS=$RPM_OPT_FLAGS LDFLAGS=-s \
-    ./configure	\
+CFLAGS="$RPM_OPT_FLAGS" LDFLAGS="-s" \
+./configure \
 	--prefix=/usr \
 	--with-threads \
 	--with-krb5 \
@@ -82,10 +83,10 @@ make
 
 %install
 rm -rf $RPM_BUILD_ROOT
-
 install -d $RPM_BUILD_ROOT/etc/{rc.d/init.d,socks5}
+
 make install prefix=$RPM_BUILD_ROOT/usr
-install %SOURCE1 $RPM_BUILD_ROOT/etc/rc.d/init.d/socks5
+install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/socks5
 
 install examples/socks5.conf.singlehomed $RPM_BUILD_ROOT/etc/socks5/socks5.conf
 echo "socks5 - - - - -" > $RPM_BUILD_ROOT/etc/socks5/libsocks5.conf
@@ -94,7 +95,8 @@ touch $RPM_BUILD_ROOT/etc/socks5/socks5.passwd
 
 rm -f examples/README
 
-bzip2 -9 $RPM_BUILD_ROOT/usr/man/man*/* doc/socks.faq examples/* ChangeLog
+gzip -9nf $RPM_BUILD_ROOT/usr/man/man*/*
+bzip2 -9 doc/socks.faq examples/* ChangeLog
 
 cd $RPM_BUILD_ROOT/usr/bin
 mv rarchie	s5archie
@@ -107,19 +109,26 @@ mv rwhois	s5whois
 
 chmod -R u+r $RPM_BUILD_ROOT
 
-%clean
-rm -rf $RPM_BUILD_ROOT
-
 %preun -p /sbin/ldconfig
 %post  -p /sbin/ldconfig
 
-%preun server
-if [ $1 = 0 ]; then
-    /sbin/chkconfig --del socks5
-fi
-
 %post server
 /sbin/chkconfig --add socks5
+if test -r /var/run/socks5.pid; then
+	/etc/rc.d/init.d/socks5 stop >&2
+	/etc/rc.d/init.d/socks5 start >&2
+else
+	echo "Run \"/etc/rc.d/init.d/socks5 start\" to start socks5 daemon."
+fi
+
+%preun server
+if [ "$1" = "0" ]; then
+	/sbin/chkconfig --del socks5
+	/etc/rc.d/init.d/socks5 stop >&2
+fi
+
+%clean
+rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
@@ -148,14 +157,14 @@ fi
 %attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /etc/socks5/socks5.conf
 %attr(600,root,root) %config(noreplace) %verify(not size mtime md5) /etc/socks5/socks5.passwd
 
-%attr(644,root,man) /usr/man/man1/stopsocks.*
-%attr(644,root,man) /usr/man/man1/socks5.*
-%attr(644,root,man) /usr/man/man5/socks5.conf.*
-%attr(644,root,man) /usr/man/man5/socks5.passwd.*
+%attr(644,root, man) /usr/man/man1/stopsocks.*
+%attr(644,root, man) /usr/man/man1/socks5.*
+%attr(644,root, man) /usr/man/man5/socks5.conf.*
+%attr(644,root, man) /usr/man/man5/socks5.passwd.*
 
 %files devel
-%attr(644,root,root,755) /usr/lib/libsocks5.a
-%attr(644,root,root,755) /usr/include/socks.h
+%attr(644,root,root) /usr/lib/libsocks5.a
+%attr(644,root,root) /usr/include/socks.h
 
 %changelog
 * Sun Jan 24 1999 Wojtek ¦lusarczyk <wojtek@shadow.eu.org>
@@ -163,12 +172,12 @@ fi
 - fixed init-script,
 - added Group(pl),
 - fixed files permissions,
-- macro %%config(noreplace) %%verify(not size mtime md5) in config files,
+- macro %config(noreplace) %verify(not size mtime md5) in config files,
 - minor changes.
 
 * Tue Jan 19 1999 Arkadiusz Mi¶kiewicz <misiek@misiek.eu.org>
   [1.0r8-1d]
-- PLD-ized
+- PLD-ized.
 
 * Thu Oct 8 1998 Scott Stone <sstone@turbolinux.com>
 - Built for TL 3.0
