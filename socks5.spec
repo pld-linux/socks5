@@ -98,7 +98,7 @@ rm -f examples/README
 gzip -9nf $RPM_BUILD_ROOT%{_mandir}/man*/*
 bzip2 -9 doc/socks.faq examples/* ChangeLog
 
-cd $RPM_BUILD_ROOT/usr/bin
+cd $RPM_BUILD_ROOT%{_bindir}
 mv rarchie	s5archie
 mv rfinger	s5finger
 mv rftp		s5ftp
@@ -135,9 +135,9 @@ rm -rf $RPM_BUILD_ROOT
 
 %attr(755,root,root) %{_libdir}/*.so
 
-%attr(755,root,root) /usr/bin/stopsocks
-%attr(755,root,root) /usr/bin/runsocks
-%attr(755,root,root) /usr/bin/s5*
+%attr(755,root,root) %{_bindir}/stopsocks
+%attr(755,root,root) %{_bindir}/runsocks
+%attr(755,root,root) %{_bindir}/s5*
 
 %dir /etc/socks5
 %config(noreplace) %verify(not size mtime md5) /etc/socks5/libsocks5.conf
