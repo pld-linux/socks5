@@ -1,31 +1,34 @@
 #!/bin/sh
 #
 # chkconfig:	2345 55 55
+#
 # description:	This shell script takes care of starting and stopping \
 #               socks5.
-#
 
-# Source function library.
+
+# Source function library
 . /etc/rc.d/init.d/functions
 
-# Source networking configuration.
+# Get network config
 . /etc/sysconfig/network
 
+# Get service config
+[ -f /etc/sysconfig/socks5 ] && . /etc/sysconfig/socks5
+
 # Check that networking is up.
-[ "${NETWORKING}" = "no" ] && exit 0
+[ "${NETWORKING}" = "no" ] && echo "Error: Networking is down"; exit 0
 
-[ -f /usr/sbin/socks5 ] || exit 0
-
-# Define nice level for Socks5
-if [ -f /etc/sysconfig/socks5 ]; then
-    . /etc/sysconfig/socks5
-fi    
 
 # See how we were called.
 case "$1" in
   start)
-        show Starting socks5
-        daemon socks5
+	# Check if the service is already running?
+	if [ ! -f /var/lock/subsys/socks5 ]; then
+		show Starting socks5
+		daemon socks5
+	else
+		echo "socks5 already is running"
+	fi
         touch /var/lock/subsys/socks5
         ;;
   stop)
@@ -35,15 +38,15 @@ case "$1" in
         rm -f /var/lock/subsys/socks5
 	deltext;ok
         ;;
-status)
+  status)
 	status socks5
 	;;
-restart)
+  restart|reload)
 	$0 stop
 	$0 start
 	;;
   *)
-        echo "Usage: $0 {start|stop|restart|status}"
+        echo "Usage: $0 {start|stop|status|restart|reload}"
         exit 1
 esac
 
