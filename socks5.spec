@@ -133,7 +133,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc doc/socks.faq.bz2
 
-%attr(755,root,root) /usr/lib/*.so
+%attr(755,root,root) %{_libdir}/*.so
 
 %attr(755,root,root) /usr/bin/stopsocks
 %attr(755,root,root) /usr/bin/runsocks
@@ -163,7 +163,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files devel
 %defattr(644,root,root,755)
-/usr/lib/libsocks5.a
+%{_libdir}/libsocks5.a
 /usr/include/socks.h
 
 %changelog
