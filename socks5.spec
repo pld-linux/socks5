@@ -142,9 +142,9 @@ rm -rf $RPM_BUILD_ROOT
 %dir /etc/socks5
 %config(noreplace) %verify(not size mtime md5) /etc/socks5/libsocks5.conf
 
-%attr(644,root, man) %{_mandir}/man1/socks5_clients.*
-%attr(644,root, man) %{_mandir}/man1/runsocks.*
-%attr(644,root, man) %{_mandir}/man5/libsocks5.conf.*
+%{_mandir}/man1/socks5_clients.*
+%{_mandir}/man1/runsocks.*
+%{_mandir}/man5/libsocks5.conf.*
 
 %files server
 %defattr(644,root,root,755)
@@ -156,10 +156,10 @@ rm -rf $RPM_BUILD_ROOT
 %attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /etc/socks5/socks5.conf
 %attr(600,root,root) %config(noreplace) %verify(not size mtime md5) /etc/socks5/socks5.passwd
 
-%attr(644,root, man) %{_mandir}/man1/stopsocks.*
-%attr(644,root, man) %{_mandir}/man1/socks5.*
-%attr(644,root, man) %{_mandir}/man5/socks5.conf.*
-%attr(644,root, man) %{_mandir}/man5/socks5.passwd.*
+%{_mandir}/man1/stopsocks.*
+%{_mandir}/man1/socks5.*
+%{_mandir}/man5/socks5.conf.*
+%{_mandir}/man5/socks5.passwd.*
 
 %files devel
 %defattr(644,root,root,755)
