@@ -95,7 +95,7 @@ install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/socks5
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/socks5
 install %{SOURCE3} %{SOURCE4} $RPM_BUILD_ROOT/etc/profile.d
 
-install examples/socks5.conf.singlehomed $RPM_BUILD_ROOT/etc/socks5/socks5.conf
+install examples/socks5.conf.gssapi $RPM_BUILD_ROOT/etc/socks5/socks5.conf
 
 echo "socks5 - - - - -" > $RPM_BUILD_ROOT/etc/socks5/libsocks5.conf
 
@@ -146,7 +146,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc examples/* ChangeLog.gz
 
-%attr(755,root,root) %{_sbindir}/socks5
+%attr(755,root,root) %{_sbindir}/*
 %attr(755,root,root) /etc/rc.d/init.d/*
 
 %attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /etc/socks5/socks5.conf
