@@ -3,7 +3,7 @@
 # chkconfig:	2345 55 55
 #
 # description:	This shell script takes care of starting and stopping \
-#               socks5.
+#		socks5.
 
 
 # Source function library
@@ -16,9 +16,13 @@
 [ -f /etc/sysconfig/socks5 ] && . /etc/sysconfig/socks5
 
 # Check that networking is up.
-if [ "${NETWORKING}" = "no" ]; then
-	echo "WARNING: Networking is down. Socks5 can't be runed."
-	exit 1
+if is_yes "${NETWORKING}"; then
+	if [ ! -f /var/lock/subsys/network ]; then
+		msg_network_down socks5
+		exit 1
+	fi
+else
+	exit 0
 fi
 
 
@@ -27,30 +31,42 @@ case "$1" in
   start)
 	# Check if the service is already running?
 	if [ ! -f /var/lock/subsys/socks5 ]; then
-		show Starting socks5
+		msm_starting socks5
 		daemon socks5
+		RETVAL=$?
+		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/socks5
 	else
-		echo "socks5 already is running"
+		msg_already_running socks5
+		exit 1
 	fi
-        touch /var/lock/subsys/socks5
-        ;;
+	;;
   stop)
-        show Shutting down socks5
-	busy
-	stopsocks &>/dev/null
-        rm -f /var/lock/subsys/socks5
-	deltext;ok
-        ;;
+	if [ ! -f /var/lock/subsys/socks5 ]; then
+		msg_stopping socks5
+		busy
+		stopsocks &>/dev/null
+		ok
+		rm -f /var/lock/subsys/socks5
+	else
+		msg_not_running socks5
+		exit 1
+	fi
+	;;
   status)
 	status socks5
 	;;
   restart|reload)
 	$0 stop
 	$0 start
+	exit $?
+	;;
+  force-reload)
+	$0 stop && $0 start
+	exit $?
 	;;
   *)
-        echo "Usage: $0 {start|stop|status|restart|reload}"
-        exit 1
+	msg_usage "$0 {start|stop|restart|reload|force-reload|status}"
+	exit 1
 esac
 
-exit 0
+exit $RETVAL
