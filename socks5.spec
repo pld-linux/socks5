@@ -148,7 +148,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc examples/* ChangeLog.gz
 
 %attr(755,root,root) %{_sbindir}/*
-%attr(755,root,root) /etc/rc.d/init.d/*
+%attr(754,root,root) /etc/rc.d/init.d/*
 
 %attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /etc/socks5/socks5.conf
 %attr(600,root,root) %config(noreplace) %verify(not size mtime md5) /etc/socks5/socks5.passwd
