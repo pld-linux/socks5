@@ -1,0 +1,5 @@
+# Customized setings for Socks5
+
+# Nicelevel for Socks5 Server
+SERVICE_RUN_NICE_LEVEL="+0"
+ 
