@@ -3,7 +3,7 @@ Summary(pl):	Serwer Proxy
 Name:		socks5
 Version:	1.0r10
 Release:	3
-License:	Copyright (c) 1995,1996 NEC Corporation. Freely distributable
+License:	freely distributable (Copyright (c) 1995,1996 NEC Corporation)
 Vendor:		Socks5 Team <socks5-comments@socks.nec.com>
 Group:		Networking/Daemons
 Source0:	%{name}-v%{version}.tar.gz
