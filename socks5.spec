@@ -6,7 +6,7 @@ Version:	1.0r8
 Release:	3
 Vendor:		Socks5 Team <socks5-comments@socks.nec.com>
 Group:		Daemons
-Group(pl):	Swerwery
+Group(pl):	Serwery
 #########	ftp://ftp.fasta.fh-dortmund.de/pub/linux/
 Source0:	%{name}-v%{version}.tar.gz
 Source1:	socks5.init
