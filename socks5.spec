@@ -6,8 +6,6 @@ Release:	3
 License:	Copyright (c) 1995,1996 NEC Corporation. Freely distributable
 Vendor:		Socks5 Team <socks5-comments@socks.nec.com>
 Group:		Networking/Daemons
-Group(de):	Netzwerkwesen/Server
-Group(pl):	Sieciowe/Serwery
 Source0:	%{name}-v%{version}.tar.gz
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
@@ -50,8 +48,6 @@ traceroute, ftp, finger, whois, archie oraz telnet u©ywaj╠ce SOCKS
 Summary:	SOCKS 5.0 Server Daemon
 Summary(pl):	Serwer SOCKS 5.0
 Group:		Daemons
-Group(de):	Server
-Group(pl):	Serwery
 Requires:	%{name} = %{version}
 
 %description server
@@ -68,13 +64,6 @@ z komputerami w Internecie. Zawiera wsparcie dla wielow╠tkowo╤ci.
 Summary:	SOCKS 5.0 Development header file and libraries
 Summary(pl):	SOCKS 5.0 - pliki nagЁСwkowe i biblioteki dla developerСw
 Group:		Development/Libraries
-Group(de):	Entwicklung/Libraries
-Group(es):	Desarrollo/Bibliotecas
-Group(fr):	Development/Librairies
-Group(pl):	Programowanie/Biblioteki
-Group(pt_BR):	Desenvolvimento/Bibliotecas
-Group(ru):	Разработка/Библиотеки
-Group(uk):	Розробка/Б╕бл╕отеки
 Requires:	%{name} = %{version}
 
 %description devel
@@ -89,13 +78,6 @@ korzystaj╠cych z SOCKS w wersji 5.0.
 Summary:	SOCKS 5.0 Static libraries
 Summary(pl):	SOCKS 5.0 - biblioteki statyczne
 Group:		Development/Libraries
-Group(de):	Entwicklung/Libraries
-Group(es):	Desarrollo/Bibliotecas
-Group(fr):	Development/Librairies
-Group(pl):	Programowanie/Biblioteki
-Group(pt_BR):	Desenvolvimento/Bibliotecas
-Group(ru):	Разработка/Библиотеки
-Group(uk):	Розробка/Б╕бл╕отеки
 Requires:	%{name}-devel = %{version}
 
 %description static
