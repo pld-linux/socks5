@@ -29,6 +29,7 @@ URL:		http://www.socks.permeo.com/
 BuildRequires:	autoconf >= 2.4
 BuildRequires:	heimdal-devel
 BuildRequires:	libident-devel
+BuildRequires:	perl-base
 Requires:	setup >= 2.4.6-2
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
