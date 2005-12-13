@@ -51,9 +51,9 @@ traceroute, ftp, finger, whois, archie oraz telnet u¿ywaj±ce SOCKS
 Summary:	SOCKS 5.0 Server Daemon
 Summary(pl):	Serwer SOCKS 5.0
 Group:		Daemons
-PreReq:		rc-scripts
 Requires(post,preun):	/sbin/chkconfig
 Requires:	%{name} = %{version}-%{release}
+Requires:	rc-scripts
 
 %description server
 SOCKS 5.0 Server - program being run on a host that can communicate
@@ -174,7 +174,7 @@ fi
 %attr(755,root,root) %{_libdir}/*.so
 %attr(755,root,root) %{_bindir}/*
 %dir %{_sysconfdir}/socks5
-%config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/socks5/libsocks5.conf
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/socks5/libsocks5.conf
 %{_mandir}/man1/socks5_clients.*
 %{_mandir}/man1/runsocks.*
 %{_mandir}/man5/libsocks5.conf.*
@@ -184,9 +184,9 @@ fi
 %doc examples/* ChangeLog README.trans
 %attr(755,root,root) %{_sbindir}/*
 %attr(754,root,root) /etc/rc.d/init.d/*
-%attr(640,root,root) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/socks5/socks5.conf
-%attr(600,root,root) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/socks5/socks5.passwd
-%attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /etc/sysconfig/*
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/socks5/socks5.conf
+%attr(600,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/socks5/socks5.passwd
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/*
 %{_mandir}/man1/stopsocks.*
 %{_mandir}/man1/socks5.*
 %{_mandir}/man5/socks5.conf.*
