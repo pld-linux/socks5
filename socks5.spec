@@ -1,5 +1,5 @@
 Summary:	Proxy server
-Summary(pl):	Serwer Proxy
+Summary(pl.UTF-8):   Serwer Proxy
 Name:		socks5
 Version:	1.0r11
 Release:	2
@@ -40,16 +40,16 @@ telnet that use SOCKS 5.0. Also includes a dynamic link library and
 script that allows you to "sockify" programs that don't normally use
 SOCKS.
 
-%description -l pl
-Pakiet pozwalaj±cy komputerom znajduj±cym siê za firewallem na
-nieograniczony dostêp do Internetu. Programy takie jak ping,
-traceroute, ftp, finger, whois, archie oraz telnet u¿ywaj±ce SOCKS
-5.0. Zawiera tak¿e bibliotekê dynamiczn± i skrypt pozwalaj±cy na
-"usockowanie" programów, które normalnie nie u¿ywaj± SOCKS5.
+%description -l pl.UTF-8
+Pakiet pozwalajÄ…cy komputerom znajdujÄ…cym siÄ™ za firewallem na
+nieograniczony dostÄ™p do Internetu. Programy takie jak ping,
+traceroute, ftp, finger, whois, archie oraz telnet uÅ¼ywajÄ…ce SOCKS
+5.0. Zawiera takÅ¼e bibliotekÄ™ dynamicznÄ… i skrypt pozwalajÄ…cy na
+"usockowanie" programÃ³w, ktÃ³re normalnie nie uÅ¼ywajÄ… SOCKS5.
 
 %package server
 Summary:	SOCKS 5.0 Server Daemon
-Summary(pl):	Serwer SOCKS 5.0
+Summary(pl.UTF-8):   Serwer SOCKS 5.0
 Group:		Daemons
 Requires(post,preun):	/sbin/chkconfig
 Requires:	%{name} = %{version}-%{release}
@@ -60,14 +60,14 @@ SOCKS 5.0 Server - program being run on a host that can communicate
 directly to hosts behind the firewall as well as hosts on the Internet
 at large. Includes multithreading support via linux threads.
 
-%description server -l pl
-Serwer SOCKS 5.0 - program który uruchamia siê na serwerze mog±cym
-komunikowaæ siê bezpo¶rednio z komputerami za firewallem tak samo jak
-z komputerami w Internecie. Zawiera wsparcie dla wielow±tkowo¶ci.
+%description server -l pl.UTF-8
+Serwer SOCKS 5.0 - program ktÃ³ry uruchamia siÄ™ na serwerze mogÄ…cym
+komunikowaÄ‡ siÄ™ bezpoÅ›rednio z komputerami za firewallem tak samo jak
+z komputerami w Internecie. Zawiera wsparcie dla wielowÄ…tkowoÅ›ci.
 
 %package devel
 Summary:	SOCKS 5.0 Development header file and libraries
-Summary(pl):	SOCKS 5.0 - pliki nag³ówkowe i biblioteki dla developerów
+Summary(pl.UTF-8):   SOCKS 5.0 - pliki nagÅ‚Ã³wkowe i biblioteki dla developerÃ³w
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 
@@ -75,13 +75,13 @@ Requires:	%{name} = %{version}-%{release}
 These are the libraries and header files required to develop for NWSL
 (previously CSTC) version 5.0 of SOCKS.
 
-%description devel -l pl
-Pakiet zawieraj±cy biblioteki i pliki nag³ówkowe dla developerów
-korzystaj±cych z SOCKS w wersji 5.0.
+%description devel -l pl.UTF-8
+Pakiet zawierajÄ…cy biblioteki i pliki nagÅ‚Ã³wkowe dla developerÃ³w
+korzystajÄ…cych z SOCKS w wersji 5.0.
 
 %package static
 Summary:	SOCKS 5.0 Static libraries
-Summary(pl):	SOCKS 5.0 - biblioteki statyczne
+Summary(pl.UTF-8):   SOCKS 5.0 - biblioteki statyczne
 Group:		Development/Libraries
 Requires:	%{name}-devel = %{version}-%{release}
 
@@ -89,7 +89,7 @@ Requires:	%{name}-devel = %{version}-%{release}
 These are the static libraries of NWSL (previously CSTC) version 5.0
 of SOCKS.
 
-%description static -l pl
+%description static -l pl.UTF-8
 Biblioteki statyczne NWSL (poprzednio CSTC) wersji 5.0 SOCKS.
 
 %prep
