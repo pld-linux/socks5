@@ -1,5 +1,5 @@
 Summary:	Proxy server
-Summary(pl.UTF-8):   Serwer Proxy
+Summary(pl.UTF-8):	Serwer Proxy
 Name:		socks5
 Version:	1.0r11
 Release:	2
@@ -49,7 +49,7 @@ traceroute, ftp, finger, whois, archie oraz telnet używające SOCKS
 
 %package server
 Summary:	SOCKS 5.0 Server Daemon
-Summary(pl.UTF-8):   Serwer SOCKS 5.0
+Summary(pl.UTF-8):	Serwer SOCKS 5.0
 Group:		Daemons
 Requires(post,preun):	/sbin/chkconfig
 Requires:	%{name} = %{version}-%{release}
@@ -67,7 +67,7 @@ z komputerami w Internecie. Zawiera wsparcie dla wielowątkowości.
 
 %package devel
 Summary:	SOCKS 5.0 Development header file and libraries
-Summary(pl.UTF-8):   SOCKS 5.0 - pliki nagłówkowe i biblioteki dla developerów
+Summary(pl.UTF-8):	SOCKS 5.0 - pliki nagłówkowe i biblioteki dla developerów
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 
@@ -81,7 +81,7 @@ korzystających z SOCKS w wersji 5.0.
 
 %package static
 Summary:	SOCKS 5.0 Static libraries
-Summary(pl.UTF-8):   SOCKS 5.0 - biblioteki statyczne
+Summary(pl.UTF-8):	SOCKS 5.0 - biblioteki statyczne
 Group:		Development/Libraries
 Requires:	%{name}-devel = %{version}-%{release}
 
