@@ -2,7 +2,7 @@ Summary:	Proxy server
 Summary(pl.UTF-8):	Serwer Proxy
 Name:		socks5
 Version:	1.0r11
-Release:	2
+Release:	3
 License:	non-commercial, not distributable
 Vendor:		Socks5 Team <socks5-comments@socks.nec.com>
 Group:		Networking/Daemons
@@ -27,7 +27,7 @@ Patch6:		%{name}-stdarg.patch
 Patch7:		%{name}-nolibs.patch
 URL:		http://www.socks.permeo.com/
 BuildRequires:	autoconf >= 2.4
-BuildRequires:	heimdal-devel
+BuildRequires:	krb5-devel
 BuildRequires:	libident-devel
 BuildRequires:	perl-base
 Requires:	setup >= 2.4.6-2
