@@ -27,7 +27,7 @@ Patch6:		%{name}-stdarg.patch
 Patch7:		%{name}-nolibs.patch
 URL:		http://www.socks.permeo.com/
 BuildRequires:	autoconf >= 2.4
-BuildRequires:	krb5-devel
+BuildRequires:	heimdal-devel
 BuildRequires:	libident-devel
 BuildRequires:	perl-base
 Requires:	setup >= 2.4.6-2
